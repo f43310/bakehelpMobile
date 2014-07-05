@@ -2,7 +2,7 @@
 	session_start();
 	// showDetail()
 	function showDetail(){
-			require_once("recipe.php");
+		require_once("recipe.php");
 		print("<form method='post' action='index.php?action=saveSonR'>");
 		$r=new recipe;
 		if ($_REQUEST[id] == ""){
@@ -15,6 +15,7 @@
 			$temperatureU=$r->queryRI(temperatureU);
 			$temperatureD=$r->queryRI(temperatureD);
 			$cooktime=$r->queryRI(cooktime);
+			$recipeType=$r->queryRI(type);
 			$r=null;
 
 			// 显示配料详情
@@ -86,7 +87,9 @@
 					<div data-role='controlgroup' data-type='horizontal'>
 						<input type='button' name='generateRecipe' id='generateRecipe' value='计算' data-inline='true'>
 						<input type='submit' name='submit' id='saveSonRecipe' value='保存' data-inline='true' disabled=\"disabled\">
-						<a href='#' data-role='button'>".$rowSum." 行</a>			
+						<input type='button' name='rowNum' id='rowNum' value='".$rowSum."'>
+						<input type='hidden' name='rowNum' id='rowNum' value='".$rowSum."'>
+
 					</div>
 
 					
@@ -94,8 +97,19 @@
 				<li class='ui-field-contain'>
 					<div data-role=\"controlgroup\" data-type=\"horizontal\">
 					<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\">
-					<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RECALPER\" data-inline=\"true\">
-					<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\">clearP</a>
+			");
+			if ($recipeType == 2) {
+				print("<input type=\"button\" name=\"reCalculateSpon\" id=\"reCalculateSpon\" value=\"RECALPER2\" data-inline=\"true\">");
+				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"2\">");
+			} else if($recipeType == 3){
+				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RECALPER3\" data-inline=\"true\">");
+				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"3\">");
+			} else {
+				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RECALPER\" data-inline=\"true\">");
+			}
+			
+					
+				print("<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\">clearP</a>
 				</div>
 				</li>
 				<li class='ui-field-contain'>
@@ -158,7 +172,8 @@
 		}else if($_REQUEST[submit]=="保存"){
 			
 			// 要插入ingres表的总行数等于($_REQUEST总数-多余的项)/3
-			$rowsNum = (count($_REQUEST) - SAVESONEXTRANUM)/3;
+			// $rowsNum = (count($_REQUEST) - SAVESONEXTRANUM)/3;
+			$rowsNum=$_REQUEST["rowNum"];
 			for($i=1;$i<=$rowsNum;$i++){
 				$ingre=new ingre;
 				$ingre->__set(name,$_REQUEST['ingre'.$i]);
@@ -177,7 +192,7 @@
 			print("<a href='index.php?action=showSonRecipes&id=".$_REQUEST[recipeId]."'>查看生成的子配方</a>");
 
 		}else if($_REQUEST[submit]=="保存为新配方"){
-			// 		print("<pre>");
+			// print("<pre>");
 			// var_dump($_REQUEST);
 			// print("</pre>");
 			// return;
@@ -197,6 +212,7 @@
 				$r->__set(temperatureU,$_REQUEST[temperatureU]);
 				$r->__set(temperatureD,$_REQUEST[temperatureD]);
 				$r->__set(cooktime,$_REQUEST[cooktime]);
+				$r->__set(type,$_REQUEST[recipeType]);
 				$r->add();
 				$r=null;
 				// print("<script>alert('配方: ".$_REQUEST[rName]." 增加成功!');</script>");
@@ -213,8 +229,8 @@
 			// 下面一行中的9在服务器上是10因为服务器多传了一个数据，这里是11因为比addRecipes.php多了3项
 			// echo SAVEASEXTRANUM;
 			// return;
-			$rowsNum = (count($_REQUEST)-SAVEASEXTRANUM)/3;			// 通过公式计算要插入数据库原料表中的个数, "4"代表其它和原料无关的元素 "3"代表配方表的三个属性 
-
+			// $rowsNum = (count($_REQUEST)-SAVEASEXTRANUM)/3;			// 通过公式计算要插入数据库原料表中的个数, "4"代表其它和原料无关的元素 "3"代表配方表的三个属性 
+			$rowsNum=$_REQUEST["rowNum"];
 			for ($i =0; $i < $rowsNum; $i++){
 				// echo $_POST['ingre'.($i+1)];
 				$ingre = new ingre;			// 建立一个配方对象

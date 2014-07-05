@@ -16,6 +16,7 @@
 		private $temperatureU;			// 上火
 		private $temperatureD;			// 下火
 		private $cooktime;				// 烘烤时间
+		private $type;					// 配方类型
 
 		// 方法
 		// __get(): 获取属性值
@@ -46,8 +47,8 @@
  		// add : 把配方对象写入数据库
  		function add(){
  			$db = new database;
- 			$sql = "INSERT INTO recipes (name,user_id,instructions,temperatureU,temperatureD,cooktime) ";
- 			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions','$this->temperatureU','$this->temperatureD','$this->cooktime')";
+ 			$sql = "INSERT INTO recipes (name,user_id,instructions,temperatureU,temperatureD,cooktime,type) ";
+ 			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions','$this->temperatureU','$this->temperatureD','$this->cooktime',$this->type)";
  			// var_dump($this->name);			// 调试
  			// echo $this->name."<br />";	    // 调试
  			// echo $sql."<br />";				// 调试
@@ -206,7 +207,7 @@
  		 		 		// query condition is recipeId
  		function queryRID(){
  			$db= new database;
- 			$sql = "SELECT *FROM ingres WHERE recipeId=$this->recipeId and sum>0";
+ 			$sql = "SELECT *FROM ingres WHERE recipeId=$this->recipeId and (sum>0 or perSum>0) and requireSum=0";
  			// echo $sql;								// 调试
  			// exit;
  			$arr_ingres=$db->query($sql);

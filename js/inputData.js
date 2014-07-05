@@ -220,6 +220,92 @@ function exchangePercSpon(){
 
 }
 
+// 先验证配料和用量两列     v
+var checkIngrePerc=function(index){
+
+      if(($("input[id='percent"+index+"']").val()=="") || ($("input[id='ingre"+index+"']").val()=="")){
+         alert("请填写第 "+index+" 行上的百分比和配料名称!");
+         return false;
+      }else{
+         return true;
+      }
+
+      // if(($("input[id='percent"+i+"']").val() != "") && ($("input[id='percent"+i+"']").val() != undefined)){
+      //    percents[i] = $("input[id='percent"+i+"']").val();
+      //    console.log("DEBUG - percents: " + percents[i]);
+      // }
+
+
+}       
+
+// 计算百分比列的总百分比
+function calculatePercSum(){
+
+      // var i=1;
+      // $("tbody tr").each(function(){
+      
+      //    i++;
+      // });
+      var sum=0;
+      var percentSum=0;
+      var l=1;
+      var nullFlag=0;
+      $("tbody tr").each(function(){
+         // sum += Number($("input[id='metric"+l+"']").val());
+         if (checkIngrePerc(l)) {
+         percentSum += Number($("input[id='percent"+l+"']").val());
+         
+         }else{
+            nullFlag=1;
+         }
+         l++;
+      });
+
+      // 表格最后增加一行显示 sum 和 percentSum
+      if (nullFlag==0){
+         $("tbody").append("<tr>"
+                     +"<td>rowNum: "+(l-1)+"<input type='hidden' name='rowNum' id='rowNum' value='"+(l-1)+"'></td>"
+                     +"<td>sum= "+formatNum(sum,2)+"<input type='hidden' name='sum' id='sum' value='"+formatNum(sum,2)+"'></td>"
+                     +"<td>sumPerc= "+formatNum(percentSum,2)+"<input type='hidden' name='percentSum' id='percentSum' value='"+formatNum(percentSum,2)+"'></td>"
+                     +"<td></td>"
+                     +"</tr>");
+      }
+
+      $("tbody").trigger("create");
+      $("#tab").table("rebuild");
+      $("#add").attr("disabled","disabled").button("refresh");
+}
+
+// 更新reCalculatePercSum
+function updateCalculatePercSum(){
+   var sum=0;
+      var percentSum=0;
+      var l=1;
+      var nullFlag=0;
+      $("tbody tr").each(function(){
+         // sum += Number($("input[id='metric"+l+"']").val());
+         if (checkIngrePerc(l)) {
+         percentSum += Number($("input[id='percent"+l+"']").val());
+         
+         }else{
+            nullFlag=1;
+         }
+         l++;
+      });
+
+      // 表格最后增加一行显示 sum 和 percentSum
+      // if (nullFlag==0){
+      //    $("tbody").append("<tr>"
+      //                +"<td>rowNum: "+(l-1)+"<input type='hidden' name='rowNum' id='rowNum' value='"+(l-1)+"'></td>"
+      //                +"<td>sum= "+formatNum(sum,2)+"<input type='hidden' name='sum' id='sum' value='"+formatNum(sum,2)+"'></td>"
+      //                +"<td>sumPerc= "+formatNum(percentSum,2)+"<input type='hidden' name='percentSum' id='percentSum' value='"+formatNum(percentSum,2)+"'></td>"
+      //                +"<td></td>"
+      //                +"</tr>");
+      // }
+
+      $("#percentSum").val(formatNum(percentSum,2));
+}
+
 // 计算总量和总百分比
 function addCalSumPerc(){
             // 先验证配料和用量两列
@@ -248,9 +334,9 @@ function addCalSumPerc(){
 
       // 表格最后增加一行显示 sum 和 percentSum
       $("tbody").append("<tr>"
-                           +"<td></td>"
-                           +"<td>总产量= "+formatNum(sum,2)+"<input type='hidden' name='sum' id='sum' value='"+formatNum(sum,2)+"'></td>"
-                           +"<td>总百分比= "+formatNum(percentSum,2)+"<input type='hidden' name='percentSum' id='percentSum' value='"+formatNum(percentSum,2)+"'></td>"
+                           +"<td>rowNum: "+(l-1)+"<input type='hidden' name='rowNum' id='rowNum' value='"+(l-1)+"'></td>"
+                           +"<td>sum= "+formatNum(sum,2)+"<input type='hidden' name='sum' id='sum' value='"+formatNum(sum,2)+"'></td>"
+                           +"<td>sumPerc= "+formatNum(percentSum,2)+"<input type='hidden' name='percentSum' id='percentSum' value='"+formatNum(percentSum,2)+"'></td>"
                            +"<td></td>"
                            +"</tr>");
       $("tbody").trigger("create");
@@ -295,12 +381,8 @@ function updateCalSumPerc(){
 // 定义recipes数组
 // var recipes = new Array();
 
-// 
-$(function(){
-// $("[type='submit']").button("disable");
-   //增加<tr/>
-   // 
-   $("#add").click(function(){
+// 增加一行
+function add(){
        console.log("DEBUG - #add click");       // 调试
        var _len = $("tbody tr").length+1;
        console.log("DEBUG - _len: " + _len);       // 调试
@@ -322,7 +404,15 @@ $(function(){
           // 增加require属性
         $("#tab input").attr('required', true);
 
-   });
+}
+
+// 
+$(function(){
+// $("[type='submit']").button("disable");
+   //增加<tr/>
+   // 
+   // $("#add").click(add());
+   $("#add").on("click",function(){add();});
 
    // 增加require属性
    $("#tab input").attr('required', true);
@@ -375,7 +465,7 @@ $(function(){
 
       // 计算有种面烘焙百分比按钮
    $(function(){
-         $("#calculateSpon").click(function(){
+         $("#calculateSpon").on("click",function(){
             // alert(exchangePerc());
                // 计算百分比
                if(exchangePercSpon()){
@@ -408,6 +498,20 @@ $(function(){
                   // 计算metric 和 percent列之和,并添加一行显示
                   updateCalSumPerc();
                }
+               
+         });
+   });
+
+       // 重新计算烘焙百分比总和按钮
+   $(function(){
+         $("#reCalculateSum").click(function(){
+            // alert(exchangePerc());
+               // 计算百分比
+               // if(exchangePercSpon()){
+               //    // 计算metric 和 percent列之和,并添加一行显示
+               //    updateCalSumPerc();
+               // }
+               updateCalculatePercSum();
                
          });
    });
@@ -515,25 +619,101 @@ $(function(){
 });
 
 // TOP 浮动
+$(function() {
+    //首先将#back-to-top隐藏
+    $("#back-to-top").hide();
+    //当滚动条的位置处于距顶部100像素以下时，跳转链接出现，否则消失
+    $(function() {
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 100) {
+                $("#back-to-top").fadeIn(1500);
+            } else {
+                $("#back-to-top").fadeOut(1500);
+            }
+        });
+        //当点击跳转链接后，回到页面顶部位置
+        $("#back-to-top").click(function() {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 1000);
+            return false;
+        });
+    });
+});
 
-   $(function(){
-   //首先将#back-to-top隐藏
-   $("#back-to-top").hide();
-   //当滚动条的位置处于距顶部100像素以下时，跳转链接出现，否则消失
-   $(function () {
-      $(window).scroll(function(){
-      if ($(window).scrollTop()>100){
-      $("#back-to-top").fadeIn(1500);
-      }
-      else
-      {
-      $("#back-to-top").fadeOut(1500);
-      }
+// 根据录入方式改变计算方式
+$(function(){
+   $("input[type='radio']").on("click",function(){
+      // alert();
+      //刷新
+      // $("input[type='radio']").checkboxradio("refresh");
+      // $( "input[type='radio']" ).checkboxradio( "refresh" );
+      $("input[type='radio']").each(function(){
+         if($(this).is(":checked")){
+            // alert(this.id+"这个被选中");
+            if(this.id=="inputType2"){
+               // alert(this.id+"这个被选中");
+               // alert($("input[id='calculate']").val());
+               // $("#calculate]").remove();
+               // $("input[id='calculate']").attr("value","calculateSpon").attr("id","calculateSpon").attr("name","calculateSpon").attr("data-ajax","false").button("refresh");
+               // ,"id":"calculateSpon","value":"计算种百分比").button("refresh");
+               // $("#calculateSpon").attr("data-ajax","false").button("refresh");
+               // $("#control1").controlgroup("create");
+               // $("#calculate").button("refresh");
+               // $("#calculateSpon").button();
+
+               $("#control1").replaceWith("<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control2'>"
+                  +"<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
+                  +"<input type=\"button\" name=\"calculateSpon\" id=\"calculateSpon\" value=\"计算2百分比\" data-mini=\"true\" data-inline=\"true\" >"
+                  +"<a href=\"#\" data-role=\"button\" id='clearP' onclick=\"clearPercentCol()\" data-mini=\"true\">clearP</a>"
+                  +"<input type='hidden' name='recipeType' id='recipeType' value='2'>"
+                  +"</div>");
+               // $("#clearP").button();
+               $("#control2").trigger("create");   // 显示样式更新
+               $("#control2").controlgroup();      // 重构
+
+               $("#add").on("click",function(){add();});
+
+               $("#calculateSpon").on("click",function(){
+               // alert(exchangePerc());
+               // 计算百分比
+                  if(exchangePercSpon()){
+                     // 计算metric 和 percent列之和,并添加一行显示
+                     addCalSumPerc();
+                  }
+               
+               });
+               // $("input[type='button']").trigger("create");
+               // $("#control1").trigger("create");
+
+               // $("#control2").controlgroup();
+
+            }else if(this.id=="inputType3"){
+               $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
+               $("#control1").replaceWith("<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control2'>"
+                  +"<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
+                  +"<input type=\"button\" name=\"calculateSum\" id=\"calculateSum\" value=\"计算总百分比\" data-mini=\"true\" data-inline=\"true\" >"
+                  +"<a href=\"#\" data-role=\"button\" id='clearP' onclick=\"clearPercentCol()\" data-mini=\"true\">clearP</a>"
+                  +"<input type='hidden' name='recipeType' id='recipeType' value='3'>"
+                  +"</div>");
+               // $("#clearP").button();
+               $("#control2").trigger("create");   // 显示样式更新
+               $("#control2").controlgroup();      // 重构
+
+               $("#add").on("click",function(){
+                  add();
+                  $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
+               });
+
+               $("#calculateSum").on("click",function(){
+               // alert(exchangePerc());
+               // 计算百分比总和
+                  calculatePercSum();
+               
+               });
+            }
+         }
       });
-      //当点击跳转链接后，回到页面顶部位置
-      $("#back-to-top").click(function(){
-      $('body,html').animate({scrollTop:0},1000);
-      return false;
-      });
-      });
-      });
+   });
+
+});

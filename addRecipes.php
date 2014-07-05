@@ -6,6 +6,16 @@
 		print("<label for=\"rName\" class=\"ui-hidden-accessible\">配方名称</label>");
 		print("<input type=\"text\" name=\"rName\" id=\"rName\" placeholder=\"配方名称\" data-clear-btn=\"true\" required=\"required\">");
 		print("</div>");
+		print("
+				<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' id='inputType'>
+					<input type='radio' name='inputType' id='inputType1' value='基本' checked='checked'>
+					<label for='inputType1'>基本</label>
+					<input type='radio' name='inputType' id='inputType2' value='种面'>
+					<label for='inputType2'>种面</label>
+					<input type='radio' name='inputType' id='inputType3' value='百分比'>
+					<label for='inputType3'>百分比</label>
+				</fieldset>
+			");
 		print("<table id=\"tab\" data-role=\"table\" data-mode=\"reflow\" class=\"ui-body-d table-stripe my-custom-breakpoint\">");
 		print("<thead>
 					<tr>
@@ -24,14 +34,10 @@
 		print("</tbody>");
 
 		print("</table><br />");
-		print("	<div data-role=\"controlgroup\" data-type=\"horizontal\">
+		print("	<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control1'>
 				<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">");
-				
-				if ($isSpon==1){
-					print("<input type=\"button\" name=\"calculateSpon\" id=\"calculateSpon\" value=\"计算2百分比\" data-mini=\"true\" data-inline=\"true\">");
-				} else{
-					print("<input type=\"button\" name=\"calculate\" id=\"calculate\" value=\"计算百分比\" data-mini=\"true\" data-inline=\"true\">");
-				}
+		// print("<input type=\"button\" name=\"calculateSpon\" id=\"calculateSpon\" value=\"计算2百分比\" data-mini=\"true\" data-inline=\"true\">");
+		print("<input type=\"button\" name=\"calculate\" id=\"calculate\" value=\"计算百分比\" data-mini=\"true\" data-inline=\"true\">");
 
 		print("	<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\" data-mini=\"true\">clearP</a>
 				</div>
@@ -84,6 +90,7 @@
 			$r->__set(temperatureU,$_REQUEST[temperatureU]);
 			$r->__set(temperatureD,$_REQUEST[temperatureD]);
 			$r->__set(cooktime,$_REQUEST[cooktime]);
+			$r->__set(type,$_REQUEST[recipeType]);
 			$r->add();
 			$r=null;
 			// print("<script>alert('配方: ".$_REQUEST[rName]." 增加成功!');</script>");
@@ -100,7 +107,8 @@
 		// 下面一行中的9在服务器上是10因为服务器多传了一个数据
 		// echo ADDEXTRANUM;
 		// return;
-		$rowsNum = (count($_REQUEST)-ADDEXTRANUM)/3;			// 通过公式计算要插入数据库原料表中的个数, "4"代表其它和原料无关的元素 "3"代表配方表的三个属性 
+		// $rowsNum = (count($_REQUEST)-ADDEXTRANUM)/3;			// 通过公式计算要插入数据库原料表中的个数, "4"代表其它和原料无关的元素 "3"代表配方表的三个属性 
+		$rowsNum=$_REQUEST["rowNum"];
 
 		for ($i =0; $i < $rowsNum; $i++){
 			// echo $_POST['ingre'.($i+1)];
