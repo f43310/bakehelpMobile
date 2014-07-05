@@ -48,7 +48,7 @@
  		function add(){
  			$db = new database;
  			$sql = "INSERT INTO recipes (name,user_id,instructions,temperatureU,temperatureD,cooktime,type) ";
- 			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions','$this->temperatureU','$this->temperatureD','$this->cooktime',$this->type)";
+ 			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions',$this->temperatureU,$this->temperatureD,$this->cooktime,$this->type)";
  			// var_dump($this->name);			// 调试
  			// echo $this->name."<br />";	    // 调试
  			// echo $sql."<br />";				// 调试

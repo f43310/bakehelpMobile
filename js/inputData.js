@@ -304,6 +304,8 @@ function updateCalculatePercSum(){
       // }
 
       $("#percentSum").val(formatNum(percentSum,2));
+      $("#rowNum1").attr("value",(l-1)).button("refresh");
+      $("#rowNum2").attr("value",(l-1)).hidden("refresh");
 }
 
 // 计算总量和总百分比
@@ -371,6 +373,8 @@ function updateCalSumPerc(){
       });
       $("#sum").val(formatNum(sum,2));
       $("#percentSum").val(formatNum(percentSum,2));
+      $("#rowNum1").attr("value",(l-1)).button("refresh");
+      $("#rowNum2").attr("value",(l-1)).hidden("refresh");
 }
 
 // 求用量总和与百分比总和
@@ -573,20 +577,23 @@ $(function(){
             var thisPercent=$("input[id='percent"+rowNum+"']").val();
             var baseMetric=round2(formatNum(this.value/(thisPercent/100),1));
             var i=1;
+            var metricSum=0;
             $("tbody tr").each(function(){
                if($("input[id='percent"+i+"']").val()==100){
                   $("input[id='metric"+i+"']").val(baseMetric);
+                  metricSum += Number(baseMetric);
                }else{
-                  if(i!=rowNum){
+                  // if(i!=rowNum){
                      var thisRowPercent=$("input[id='percent"+i+"']").val();
                      var thisMetric=round2(formatNum(baseMetric*(thisRowPercent/100),1));
                      $("input[id='metric"+i+"']").val(thisMetric);
-                  }
+                     metricSum += Number(thisMetric);
+                  // }
                }
                i++;
             });
          }
-
+         $("#sum").val(metricSum);
          
       });
    });

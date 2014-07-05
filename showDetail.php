@@ -87,8 +87,8 @@
 					<div data-role='controlgroup' data-type='horizontal'>
 						<input type='button' name='generateRecipe' id='generateRecipe' value='计算' data-inline='true'>
 						<input type='submit' name='submit' id='saveSonRecipe' value='保存' data-inline='true' disabled=\"disabled\">
-						<input type='button' name='rowNum' id='rowNum' value='".$rowSum."'>
-						<input type='hidden' name='rowNum' id='rowNum' value='".$rowSum."'>
+						<input type='button' name='rowNum' id='rowNum1' value='".$rowSum."'>
+						<input type='hidden' name='rowNum' id='rowNum2' value='".$rowSum."'>
 
 					</div>
 
@@ -99,13 +99,17 @@
 					<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\">
 			");
 			if ($recipeType == 2) {
-				print("<input type=\"button\" name=\"reCalculateSpon\" id=\"reCalculateSpon\" value=\"RECALPER2\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculateSpon\" id=\"reCalculateSpon\" value=\"RC2\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
 				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"2\">");
 			} else if($recipeType == 3){
-				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RECALPER3\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
 				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"3\">");
 			} else {
-				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RECALPER\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
+				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
+				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"1\">");
 			}
 			
 					
@@ -214,11 +218,11 @@
 				$r->__set(cooktime,$_REQUEST[cooktime]);
 				$r->__set(type,$_REQUEST[recipeType]);
 				$r->add();
-				$r=null;
+				// $r=null;
 				// print("<script>alert('配方: ".$_REQUEST[rName]." 增加成功!');</script>");
 			}
 			// 插入 ingres 表
-			$r=new recipe;
+			// $r=new recipe;
 			$r->__set(name,$_REQUEST[rName]);
 			// echo $r->__get(name);
 			$id=$r->queryId();
