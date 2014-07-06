@@ -47,6 +47,10 @@ require_once("bakehelp.php");
 				deleteR($_REQUEST[id]);
 			} else if($action=="showRecycleBin"){
 				require_once("showRecycleBin.php");
+				if(isset($_REQUEST["delAll"]) && $_REQUEST["delAll"]==1){
+					require_once("recycleBinEmpty.php");
+					recycleBinEmpty();
+				}
 				showRecycleBin();
 			} else if ($action=="deleteRR") {
 				require_once("delReqRecipe.php");
