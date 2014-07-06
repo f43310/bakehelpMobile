@@ -133,6 +133,7 @@
 	{
 		// 属性
 		//
+		private $id;
 		private $name;					// 原料名称
 		private $recipeName;			// 配方名称
 		private $recipeId;					// 配方id
@@ -235,6 +236,16 @@
  			$arr_ingres=$db->query($sql);
  			return $arr_ingres;
  			$db=NULL;
+ 		}
+
+ 		// update showDetail.php 的更新,只更新
+ 		function update(){
+ 			$db=new database;
+ 			$sql = "UPDATE ingres SET ";
+ 			$sql .= "name='$this->name', recipeName='$this->recipeName', metric=$this->metric, percent=$this->percent, sum=$this->sum, perSum=$this->perSum";
+ 			$sql .= " where id=$this->id";
+ 			$db->execute($sql);
+ 			$db=null;
  		}
 
 	}

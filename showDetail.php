@@ -57,7 +57,7 @@
 		foreach ($all_ingres as $item) {
 				print("
 				<tr id='".$i."'>
-					<td class='ui-field-contain'><input type='text' name='ingre".$i."' id='ingre".$i."' value=\"$item->name\"></td>
+					<td class='ui-field-contain'><input type='text' name='ingre".$i."' id='ingre".$i."' value=\"$item->name\"><input type='hidden' name='ingreId".$i."' id='ingreId".$i."' value=\"$item->id\"></td>
 					<td class='ui-field-contain'><input type='text' name='metric".$i."' id='metric".$i."'  value=\"$item->metric\"></td>
 					<td class='ui-field-contain'><input type='text' name='percent".$i."' id='percent".$i."'  value=\"$item->percent\"></td>
 					<td class='ui-field-contain'><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-mini\" onclick=\"deltr($i)\">删</a></td>
@@ -170,8 +170,24 @@
 			$r->__set(cooktime,$_REQUEST[cooktime]);
 			$r->update();
 			$r=null;
-			print("修改成功！<br />");
-			print("<a href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."'>查看结果</a>");
+
+			$rowsNum=$_REQUEST["rowNum"];
+			for ($i=0; $i <$rowsNum; $i++) { 
+				$ingre=new ingre;
+				$ingre->__set(id,$_REQUEST["ingreId".($i+1)]);
+				$ingre->__set(name,$_REQUEST["ingre".($i+1)]);
+				$ingre->__set(recipeName,$_REQUEST[rName]);
+				$ingre->__set(metric,$_REQUEST["metric".($i+1)]);
+				$ingre->__set(percent,$_REQUEST["percent".($i+1)]);
+				$ingre->__set(sum,$_REQUEST["sum"]);
+				$ingre->__set(perSum,$_REQUEST["percentSum"]);
+				$ingre->update();
+				$ingre=null;
+			}
+			// print("修改成功！<br />");
+			// print("<a href='index.php'>查看结果</a>");
+			// print("<a href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."'>查看结果</a>");
+			print("<script>alert('配方 ".$_REQUEST[rName]." 更新成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
 
 		}else if($_REQUEST[submit]=="保存"){
 			
