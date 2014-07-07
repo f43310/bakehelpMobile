@@ -20,9 +20,6 @@ require_once("bakehelp.php");
 				require_once("addRecipes.php");
 				showAddForm($_REQUEST[spon]);
 				
-			} else if($action=="addNewW"){
-				require_once("addRecipesPC.php");
-				showAddForm($_REQUEST[spon]);
 			}else if ($action=="upsert") {
 				require_once("addRecipes.php");
 				addRecipes();
