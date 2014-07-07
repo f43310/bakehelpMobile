@@ -161,6 +161,53 @@ $(function(){
 
 });
 
+// 换算单位
+$(function(){
+   $("#selectUnit").on("change",function(){
+      var otherUnit=$("#otherUnit").val();
+      var gUnit=0;
+      if(otherUnit!=""){
+         // alert();
+         console.log("DEBUG - selectValue:"+this.value);
+         console.log("DEBUG - otherUnit:"+otherUnit);
+         var selectValue=Number(this.value);
+         switch(selectValue){
+            case 1:
+            // 千克
+            gUnit=otherUnit*1000;
+            console.log("DEBUG - gUnit1:"+gUnit);
+            break;
+            case 2:
+            gUnit=otherUnit*500;
+            console.log("DEBUG - gUnit2:"+gUnit);
+            break;
+            case 3:
+            gUnit=otherUnit*50;
+            console.log("DEBUG - gUnit3:"+gUnit);
+            break;
+            case 4:
+            gUnit=otherUnit*5;
+            console.log("DEBUG - gUnit4:"+gUnit);
+            break;
+         }
+         $("#gUnit").val(gUnit);
+      }
+   });
+
+   // 复制转换单位后的数值
+   $("#zCopy").zclip({
+      path: "js/ZeroClipboard.swf",
+      copy: function(){
+         return $(this).parent().find("#gUnit").val();
+      },
+      afterCopy:function(){/*复制成功后的操作*/
+         var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+         $("body").find(".copy-tips").remove().end().append($copysuc);
+         $(".copy-tips").fadeOut(2000);
+      }
+   });
+});
+
 // 计算百分比方法
 //
 function exchangePerc(){

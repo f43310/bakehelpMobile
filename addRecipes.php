@@ -10,6 +10,7 @@
 
 		print("
 				<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' id='inputType'>
+					<legend>请选择录入类型:</legend>
 					<input type='radio' name='inputType' id='inputType1' value='基本' checked='checked'>
 					<label for='inputType1'>基本</label>
 					<input type='radio' name='inputType' id='inputType2' value='种面'>
@@ -18,6 +19,23 @@
 					<label for='inputType3'>百分比</label>
 				</fieldset>
 			");
+		print("
+				<div data-role='fieldcontain'>
+						<input type=\"number\" name=\"otherUnit\" id=\"otherUnit\" data-role='none'>
+						<select name='selectUnit' id='selectUnit' data-role='none'>
+						<option>单位</option>
+						<optgroup label='公制'>
+							<option value=\"1\">千克</option>
+						</optgroup>
+						<optgroup label='市制'>
+							<option value=\"2\">斤</option>
+							<option value=\"3\">两</option>
+							<option value=\"4\">钱</option>
+						</optgroup>
+						</select>
+						<input type=\"number\" name='gUnit' id='gUnit' data-role='none'/>
+						<input type=\"button\" name='zCopy' id='zCopy' value='复制'  data-role='none'/>
+				</div>");
 		print("<table id=\"tab\" data-role=\"table\" data-mode=\"reflow\" class=\"ui-body-d table-stripe my-custom-breakpoint\">");
 		print("<thead>
 					<tr>

@@ -65,8 +65,14 @@
 	#back-to-top a:hover span{
 		background:#979797 url(images/arrow-up.png) no-repeat center center;
 	}
+
+	/**/
+	/* 复制提示 */
+	.copy-tips{position:fixed;z-index:999;bottom:50%;left:50%;margin:0 0 -20px -80px;background-color:rgba(0, 0, 0, 0.2);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#30000000, endColorstr=#30000000);padding:6px;}
+	.copy-tips-wrap{padding:10px 20px;text-align:center;border:1px solid #F4D9A6;background-color:#FFFDEE;font-size:14px;}
 	</style>
 	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/jquery.zclip.min.js"></script>
 	<script src="js/jquery.mobile-1.4.2.min.js"></script>
 	<script src="js/inputData.js"></script>
 </head>
