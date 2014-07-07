@@ -8,6 +8,7 @@ unset($_SESSION["deleted"]);
 		$all_recipes=$r::query($cond);
 
 		print("<a href=\"index.php?action=addNew\" data-ajax=\"false\">添加配方</a><br>");
+		print("<a href=\"index.php?action=addNewW\" data-ajax=\"false\">添加配方宽屏</a><br>");
 		// print("<a href=\"index.php?action=addNew&spon=1\" data-ajax=\"false\">添加有种配方</a>");
 		print("<ul data-role=\"listview\" data-filter=\"true\">");
 		foreach ($all_recipes as $item) {

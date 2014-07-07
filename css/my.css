@@ -44,3 +44,10 @@ img {
 	display: block;
 	clear:both;
 }
+
+#mySpan font {
+	line-height: 2.4em;
+	vertical-align: middle;
+	margin-left: 10px;
+	font-weight: bold;
+}

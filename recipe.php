@@ -51,7 +51,7 @@
  			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions',$this->temperatureU,$this->temperatureD,$this->cooktime,$this->type)";
  			// var_dump($this->name);			// 调试
  			// echo $this->name."<br />";	    // 调试
- 			// echo $sql."<br />";				// 调试
+ 			echo $sql."<br />";				// 调试
  			// exit;							// 调试
 			$db->execute($sql);
  			$db=NULL;
@@ -85,6 +85,29 @@
  			$sql= "UPDATE recipes SET ";
  			$sql.="name='$this->name',instructions='$this->instructions',temperatureU=$this->temperatureU,temperatureD=$this->temperatureD,cooktime=$this->cooktime ";
  			$sql.="where id =$this->id";
+ 			// echo $sql."<br>";
+ 			$db->execute($sql);
+ 			$db=null;
+ 		}
+
+ 		// 更改 recipes 表配方名称
+ 		function updateName(){
+ 			$db=new database;
+ 			$sql= "UPDATE recipes SET ";
+ 			$sql.="name='$this->name'";
+ 			$sql.=" where id =$this->id";
+ 			// echo $sql."<br>";
+ 			$db->execute($sql);
+ 			$db=null;
+ 		}
+
+ 		 // 更改 recipes 表其它信息不包含名称
+ 		function updateOther(){
+ 			$db=new database;
+ 			$sql= "UPDATE recipes SET ";
+ 			$sql.="instructions='$this->instructions',temperatureU=$this->temperatureU,temperatureD=$this->temperatureD,cooktime=$this->cooktime ";
+ 			$sql.=" where id =$this->id";
+ 			// echo $sql."<br>";
  			$db->execute($sql);
  			$db=null;
  		}
@@ -118,6 +141,15 @@
  			// echo $sql."<br>";
  			$row=$db->executeSFOR($sql);
  			return $row->$condition;
+ 			$db=null;
+ 		}
+ 		// 查询是否重名
+ 		function querySameNameRows(){
+ 			$db=new database;
+ 			$sql="SELECT *FROM recipes WHERE name='$this->name'";
+ 			// echo $sql;
+ 			$rowsNum=$db->queryRows($sql);
+ 			return $rowsNum;
  			$db=null;
  		}
 
@@ -176,6 +208,7 @@
  		}
 
  		 	// delete : 从数据库删除对象
+ 		// 根据配方id，删除所有配方内容
  		function delete(){
  			$db = new database;
  			$sql = "DELETE FROM ingres ";
@@ -184,11 +217,20 @@
  			$db=NULL;
  		}
 
- 		//
+ 		// 删除单个需求子配方
  		function deleteRR(){
  			$db = new database;
  			$sql = "DELETE FROM ingres ";
  			$sql.= "WHERE recipeId=$this->recipeId and requireSum=$this->requireSum";
+ 			$db->execute($sql);
+ 			$db=NULL;
+ 		}
+
+ 		// 删除一个配方的所有子配方
+ 		function delAllSonByRID(){
+ 			$db = new database;
+ 			$sql = "DELETE FROM ingres ";
+ 			$sql.= "WHERE recipeId=$this->recipeId and requireSum>0";
  			$db->execute($sql);
  			$db=NULL;
  		}
@@ -244,6 +286,17 @@
  			$sql = "UPDATE ingres SET ";
  			$sql .= "name='$this->name', recipeName='$this->recipeName', metric=$this->metric, percent=$this->percent, sum=$this->sum, perSum=$this->perSum";
  			$sql .= " where id=$this->id";
+ 			$db->execute($sql);
+ 			$db=null;
+ 		}
+
+ 		// updateRecipeName 更新 ingres 表该配方所有 recipeName
+ 		function updateRecipeName(){
+ 			$db=new database;
+ 			$sql = "UPDATE ingres SET ";
+ 			$sql .= "recipeName='$this->recipeName'";
+ 			$sql .= " where recipeId=$this->recipeId";
+ 			// echo "updateRecipeName: ".$sql;
  			$db->execute($sql);
  			$db=null;
  		}

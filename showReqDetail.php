@@ -17,14 +17,16 @@
 		$ingre=new ingre;
 		$ingre->__set(recipeId,$_REQUEST[id]);
 		$allReqIngres=$ingre->queryReqIngres($reqSum);
+		$ingre=null;
 		print("<table id=\"tab\" data-role=\"table\" data-mode=\"reflow\" class=\"ui-body-d table-stripe my-custom-breakpoint\">
 				<thead>
 					<tr>
-						<th colspan='2'><h1>配方 $recipeName 产量 $_REQUEST[reqSum] - 副本</h1></th>
+						<th colspan='3'><h1>配方 $recipeName 产量 $_REQUEST[reqSum] - 副本</h1></th>
 					</tr>
 					<tr>
 						<th>配料</th>
-						<th>用量</th>
+						<th>用量(g)</th>
+						<th>百分比(%)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,8 +38,16 @@
 			print("<tr>
 						<td>$item->name</td>
 						<td>$item->metric</td>
+						<td>$item->percent</td>
 					</tr>");
+			$sum += (float)$item->metric;
+			$percentSum = $item->perSum; 
 		}
+		print("<tr>
+				<td></td>
+				<td>Sum: $sum</td>
+				<td>PerSum: $percentSum</td>
+			</tr>");
 		print("</tbody></table>");
 		
 	}

@@ -486,6 +486,45 @@ function add(){
 
 }
 
+// 增加一行
+function addW(){
+       console.log("DEBUG - #add click");       // 调试
+       var _len = $("tbody tr").length+1;
+       console.log("DEBUG - _len: " + _len);       // 调试
+         $("tbody").append("<tr id='"+_len+"'>"
+            +"<td><div data-role='fieldcontain'><input type='text' name='ingre"+_len+"' id='ingre"+_len+"' data-mini='true'></div></td>"
+            +"<td><div class='ui-grid-a ui-mini'>"
+            +"<div class='ui-block-a'><input type='text' name='metric1' id='metric1'></div>"
+            +"<div class='ui-block-b'>"
+               +"<select name='selectUnit1' id='selectUnit1'>"
+               +"<optgroup label='公制'>"
+                  +"<option value='1'>克</option>"
+                  +"<option value='2'>千克</option>"
+               +"</optgroup>"
+               +"<optgroup label='市制'>"
+                  +"<option value='3'>斤</option>"
+                  +"<option value='4'>两</option>"
+                  +"<option value='5'>钱</option>"
+               +"</optgroup>"
+               +"</select>"
+            +"</div>"
+         +"</div></td>"
+            +"<td><div data-role='fieldcontain'><input type='number' name='percent"+_len+"' id='percent"+_len+"' data-mini='true'></div></td>"
+            +"<td><a href='#' data-role='button' data-mini='true' onclick='deltr("+_len+")'>删</a></td>"
+            +"</tr>");
+         $("tbody").trigger("create");    // css样式丢失,不能正解渲染
+         $("#tab").table("rebuild");         // 重构在reflow模式下,低屏宽显示正常
+            // 删除控件
+      $("#tab input").textinput({clearBtn:true});
+      $("#tab input").textinput("refresh");
+      // 增加一行就绑定一次事件
+      $("input[type='number']").on("keyup change", function(){this.value=numberAndPoint(this.value);});
+      // 设置step验证
+      $("input[type='number']").attr("step", "0.01");
+          // 增加require属性
+        $("#tab input").attr('required', true);
+
+}
 
 // 
 $(function(){
@@ -502,6 +541,8 @@ $(function(){
    $("#tab input").textinput({clearBtn:true});
    $("#tab input").textinput("refresh");  
 
+   // 宽屏页添加配方
+   $("#addW").on("click",function(){addW();});
 
 
 });
@@ -748,7 +789,7 @@ $(function(){
                // $("#calculateSpon").button();
 
                $("div[id^='control']").replaceWith("<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control2'>"
-                  +"<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
+                  +"<input type=\"button\" name=\"addW\" id=\"addW\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
                   +"<input type=\"button\" name=\"calculateSpon\" id=\"calculateSpon\" value=\"计算有种面百分比\" data-mini=\"true\" data-inline=\"true\" >"
                   +"<a href=\"#\" data-role=\"button\" id='clearP' onclick=\"clearPercentCol()\" data-mini=\"true\">clearP</a>"
                   +"<input type='hidden' name='recipeType' id='recipeType' value='2'>"
@@ -757,7 +798,7 @@ $(function(){
                $("#control2").trigger("create");   // 显示样式更新
                $("#control2").controlgroup();      // 重构
 
-               $("#add").on("click",function(){add();});
+               $("#addW").on("click",function(){addW();});
 
                $("#calculateSpon").on("click",function(){
                // alert(exchangePerc());
@@ -777,7 +818,7 @@ $(function(){
                // alert(this.id+"这个被选中");
                $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
                $("div[id^='control']").replaceWith("<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control3'>"
-                  +"<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
+                  +"<input type=\"button\" name=\"addW\" id=\"addW\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
                   +"<input type=\"button\" name=\"calculateSum\" id=\"calculateSum\" value=\"计算总百分比\" data-mini=\"true\" data-inline=\"true\" >"
                   +"<a href=\"#\" data-role=\"button\" id='clearP' onclick=\"clearPercentCol()\" data-mini=\"true\">clearP</a>"
                   +"<input type='hidden' name='recipeType' id='recipeType' value='3'>"
@@ -786,8 +827,8 @@ $(function(){
                $("#control3").trigger("create");   // 显示样式更新
                $("#control3").controlgroup();      // 重构
 
-               $("#add").on("click",function(){
-                  add();
+               $("#addW").on("click",function(){
+                  addW();
                   $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
                });
 

@@ -39,8 +39,10 @@
 					<tr>
 						<th colspan='4'>
 						<div data-role='fieldcontain'>
-							<label for='rName'>配方:</label>
+							<label for='rName' class='ui-hidden-accessible'>配方:</label>
 							<input type='text' name='rName' id='rName' value='".$recipeName."' data-inline='true'>
+							<input type='submit' name='submit' id='submit5' value='改名' data-inline='true' data-mini='true'>
+							<div id='mySpan'></div>
 						</div>
 						</th>
 					</tr>
@@ -84,37 +86,39 @@
 					<input type='hidden' name='recipeName' id='recipeName' value=\"$recipeName\">
 					<input type='hidden' name='recipeId' id='recipeId' value=\"$_REQUEST[id]\">
 
-					<div data-role='controlgroup' data-type='horizontal'>
+					<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>
+						<legend>计算保存:</legend>
 						<input type='button' name='generateRecipe' id='generateRecipe' value='计算' data-inline='true'>
 						<input type='submit' name='submit' id='saveSonRecipe' value='保存' data-inline='true' disabled=\"disabled\">
-						<input type='button' name='rowNum' id='rowNum1' value='".$rowSum."'>
+						<input type='button' name='rowNum' id='rowNum1' value='".$rowSum."' data-inline='true'>
 						<input type='hidden' name='rowNum' id='rowNum2' value='".$rowSum."'>
 
-					</div>
+					</fieldset>
 
 					
 				</li>
 				<li class='ui-field-contain'>
-					<div data-role=\"controlgroup\" data-type=\"horizontal\">
+					<fieldset data-role=\"controlgroup\" data-type=\"horizontal\" data-mini='true'>
+					<legend>修改配方:</legend>
 					<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\">
 			");
-			if ($recipeType == 2) {
-				print("<input type=\"button\" name=\"reCalculateSpon\" id=\"reCalculateSpon\" value=\"RC2\" data-inline=\"true\">");
-				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
-				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"2\">");
-			} else if($recipeType == 3){
-				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
-				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
-				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"3\">");
-			} else {
-				print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
-				print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
-				print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"1\">");
-			}
-			
+					if ($recipeType == 2) {
+						print("<input type=\"button\" name=\"reCalculateSpon\" id=\"reCalculateSpon\" value=\"RC2\" data-inline=\"true\">");
+						print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
+						print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"2\">");
+					} else if($recipeType == 3){
+						print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
+						print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
+						print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"3\">");
+					} else {
+						print("<input type=\"button\" name=\"reCalculate\" id=\"reCalculate\" value=\"RC1\" data-inline=\"true\">");
+						print("<input type=\"button\" name=\"reCalculateSum\" id=\"reCalculateSum\" value=\"RC3\" data-inline=\"true\">");
+						print("<input type=\"hidden\" name=\"recipeType\" id=\"recipeType\" value=\"1\">");
+					}
 					
-				print("<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\">clearP</a>
-				</div>
+							
+						print("<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\">clearP</a>
+				</fieldset>
 				</li>
 				<li class='ui-field-contain'>
 					<a href='index.php?action=showSonRecipes&id=".$_REQUEST[id]."'>查看生成的子配方</a>
@@ -144,8 +148,12 @@
 					<textarea cols='80' rows='8' name='instruc' id='instruc'>$instruc</textarea>
 				</li>
 				<li class='ui-field-contain'>
-					<input type='submit' name='submit' id='updateRecipe' value='更新配方' data-inline='true'>
-					<input type='submit' name='submit' id='saveAsNewRecipe' value='保存为新配方' data-inline='true'>
+					<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>
+						<legend>更新保存:</legend>
+						<input type='submit' name='submit' id='updateRecipe' value='更新配方' data-inline='true' onclick='return confirm(\"你确定要更新配方内容吗？如果是将删除所有过时的子配方.\");'>
+						<input type='submit' name='submit' id='updataROther' value='更新其它' data-inline='true'>
+						<input type='submit' name='submit' id='saveAsNewRecipe' value='保存为新配方' data-inline='true'>
+					</fieldset>
 				</li>
 
 			  </ul>
@@ -160,7 +168,32 @@
 		// var_dump($_REQUEST);
 		// print("<pre>");
 		// return;
-		if ($_REQUEST[submit]=="更新配方"){
+		if($_REQUEST[submit]=="改名"){
+			$r=new recipe;
+			$r->__set(id,$_REQUEST[recipeId]);
+			$r->__set(name,$_REQUEST[rName]);
+			$r->updateName();
+			$r=null;
+
+			$ingre=new ingre;
+			$ingre->__set(recipeId,$_REQUEST[recipeId]);
+			$ingre->__set(recipeName,$_REQUEST[rName]);
+			$ingre->updateRecipeName();
+			$ingre=null;
+			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 改名 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
+		
+		}else if($_REQUEST[submit]=="更新其它"){
+			$r=new recipe;
+			$r->__set(id,$_REQUEST[recipeId]);
+			// $r->__set(name,$_REQUEST[rName]);
+			$r->__set(instructions,$_REQUEST[instruc]);
+			$r->__set(temperatureU,$_REQUEST[temperatureU]);
+			$r->__set(temperatureD,$_REQUEST[temperatureD]);
+			$r->__set(cooktime,$_REQUEST[cooktime]);
+			$r->updateOther();
+			$r=null;
+			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 更新其它 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
+		}else if ($_REQUEST[submit]=="更新配方"){
 			$r=new recipe;
 			$r->__set(id,$_REQUEST[recipeId]);
 			$r->__set(name,$_REQUEST[rName]);
@@ -184,10 +217,16 @@
 				$ingre->update();
 				$ingre=null;
 			}
+
+			// 更新原配方后删除所有子配方
+			$ingre=new ingre;
+			$ingre->__set(recipeId,$_REQUEST[recipeId]);
+			$ingre->delAllSonByRID();
+			$ingre=null;
 			// print("修改成功！<br />");
 			// print("<a href='index.php'>查看结果</a>");
 			// print("<a href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."'>查看结果</a>");
-			print("<script>alert('配方 ".$_REQUEST[rName]." 更新成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 配方更新 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
 
 		}else if($_REQUEST[submit]=="保存"){
 			
@@ -271,7 +310,7 @@
 
 		}
 		else {
-			print("请再返回一步，由于保存了子配方");
+			print("<script>location.href='index.php';</script>");
 		}
 	}
 

@@ -29,7 +29,25 @@
 		print("<tbody>");
 		print("<tr id=\"1\">
 			<td><div data-role=\"fieldcontain\"><input type=\"text\" name=\"ingre1\" id=\"ingre1\" data-mini=\"true\"></div></td>
-			<td><div data-role=\"fieldcontain\"><input type=\"number\" name=\"metric1\" id=\"metric1\" data-mini=\"true\"></div></td>
+			<td>
+				<div class='ui-grid-a ui-mini'>
+				<div class='ui-block-a'><input type=\"text\" name=\"metric1\" id=\"metric1\"></div>
+				<div class='ui-block-b'>
+					<select name='selectUnit1' id='selectUnit1'>
+					
+					<optgroup label='公制'>
+						<option value=\"1\">克</option>
+						<option value=\"2\">千克</option>
+					</optgroup>
+					<optgroup label='市制'>
+						<option value=\"3\">斤</option>
+						<option value=\"4\">两</option>
+						<option value=\"5\">钱</option>
+					</optgroup>
+
+					</select>
+				</div>
+			</div></td>
 			<td><div data-role=\"fieldcontain\"><input type=\"number\" name=\"percent1\" id=\"percent1\" data-mini=\"true\" placeholder='此列自动生成'> </div></td>
 			<td><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-state-disabled ui-mini\">删</a></td></tr>");
 
@@ -37,7 +55,7 @@
 
 		print("</table><br />");
 		print("	<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control1' data-mini='true'>
-					<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\">");
+					<input type=\"button\" name=\"addW\" id=\"addW\" value=\"增加一行\" data-inline=\"true\">");
 		// print("<input type=\"button\" name=\"calculateSpon\" id=\"calculateSpon\" value=\"计算2百分比\" data-inline=\"true\">");
 			print("<input type=\"button\" name=\"calculate\" id=\"calculate\" value=\"计算百分比\" data-inline=\"true\">");
 
