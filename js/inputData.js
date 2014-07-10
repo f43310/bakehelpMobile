@@ -1,4 +1,10 @@
 // 确保metric列和百分比列输入的都是数字且大于0
+// 全局变量
+var xmlhttp;
+
+
+//
+
 //格式化数字，输入只能是数字和小数点
 //
 function numberAndPoint(str) {
@@ -96,47 +102,104 @@ function stripHTMLTag(str) {
             
     return str;
 }
-// ajax验证配方名是否重名
-//
-function showHint(str){
-   var xmlhttp;
-   if (str.length==0) {
-      $("#mySpan").text("");
-      return;
-   };
+
+// 多个ajax任务共用的创建 XMLHTTPRequest标准函数o
+
+function loadXMLDoc(url,fun){
+   // 建立XMLHttpRequest对象
    if (window.XMLHttpRequest) { // code for IE7+,Firefox, chrome, opera, safari
       xmlhttp= new XMLHttpRequest();
    } else{ // code for IE5, IE6
       xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
    };
-   xmlhttp.onreadystatechange=function(){
-      if(xmlhttp.readyState==4 && xmlhttp.status==200){
-         $("#mySpan").html(xmlhttp.responseText);
-         
-            // $("form").submit(function(){
-               // if(stripHTMLTag(xmlhttp.responseText)=="重名"){
-               //    console.log("DEBUG - 阻止form");
-               //    $("form").submit(function(e){e.preventDefault();});
-               // }else{
-               //    console.log("DEBUG - mySpan: 非重名");
-               //    // $("#save").click(function(){
-               //    //    console.log("DEBUG - mySpan: 进入");
-               //    //    return true;
-               //    // }).button("refresh");
-               // }
-            // });
-         
-      }
-   }
-   xmlhttp.open("GET","queryDouble.php?q="+str,true);
+   // 设置响应后执行的函数
+   xmlhttp.onreadystatechange=fun;
+    console.log("DEBUG - URL:"+url);
+   xmlhttp.open("GET",url,true);
    xmlhttp.send();
+}
+
+// ajax验证配方名是否重名
+//
+function showHint(str){
+   if (str.length==0) {
+      $("#mySpan").text("");
+      console.log("DEBUG - #mySpan:"+'空');
+   return;
+   };
+   loadXMLDoc("queryDouble.php?q="+str,function(){
+      if(xmlhttp.readyState==4 && xmlhttp.status==200){
+         console.log("DEBUG - #mySpan:"+xmlhttp.responseText);
+         $("#mySpan").html(xmlhttp.responseText);
+      }
+   });
+   // var xmlhttp;
+   // if (str.length==0) {
+   //    $("#mySpan").text("");
+   //    return;
+   // };
+   // if (window.XMLHttpRequest) { // code for IE7+,Firefox, chrome, opera, safari
+   //    xmlhttp= new XMLHttpRequest();
+   // } else{ // code for IE5, IE6
+   //    xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
+   // };
+   // xmlhttp.onreadystatechange=function(){
+   //    if(xmlhttp.readyState==4 && xmlhttp.status==200){
+   //       $("#mySpan").html(xmlhttp.responseText);
+         
+   //          // $("form").submit(function(){
+   //             // if(stripHTMLTag(xmlhttp.responseText)=="重名"){
+   //             //    console.log("DEBUG - 阻止form");
+   //             //    $("form").submit(function(e){e.preventDefault();});
+   //             // }else{
+   //             //    console.log("DEBUG - mySpan: 非重名");
+   //             //    // $("#save").click(function(){
+   //             //    //    console.log("DEBUG - mySpan: 进入");
+   //             //    //    return true;
+   //             //    // }).button("refresh");
+   //             // }
+   //          // });
+         
+   //    }
+   // }
+   // xmlhttp.open("GET","queryDouble.php?q="+str,true);
+   // xmlhttp.send();
 
 }
 
-// 绑定事件到配方名称
+// 查询勺，汤匙,克换算表
+
+function queryG(str){
+   if(str.length==0){
+      $("#queryG").val("");
+      return;
+   }
+
+   loadXMLDoc("queryG.php?tsp="+str,function(){
+      if(xmlhttp.readyState==4 && xmlhttp.status==200){
+          console.log("DEBUG - #mySpan:"+xmlhttp.responseText);
+         $("#queryGResult").html(xmlhttp.responseText);
+            // 查询tsp到g转换表后
+         $(".copy").zclip({
+            path: "js/ZeroClipboard.swf",
+            copy: function(){
+               return $(this).text();
+            },
+            afterCopy:function(){/*复制成功后的操作*/
+               var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+               $("body").find(".copy-tips").remove().end().append($copysuc);
+               $(".copy-tips").fadeOut(2000);
+            }
+         });
+      }
+   });
+}
+
+// ajax绑定事件到配方名称
 //
 $(function(){
    // $("#mySpan").text("垃圾");
+   // ajax绑定事件到配方名称
    $("#rName").on("change keyup",function(){
       console.log("DEBUG - #rName: 绑定事件到配方名称");
       showHint(this.value);
@@ -148,6 +211,10 @@ $(function(){
       //     console.log("DEBUG - 提交form");
       //    $("form").submit();
       // }
+   });
+
+   $("#queryG").on("change keyup",function(){
+      queryG(this.value);
    });
 
    // 验证表单
@@ -163,7 +230,7 @@ $(function(){
 
 // 换算单位
 $(function(){
-   $("#selectUnit").on("change",function(){
+   $("#selectUnit").on("click change",function(){
       var otherUnit=$("#otherUnit").val();
       var gUnit=0;
       if(otherUnit!=""){
@@ -189,6 +256,10 @@ $(function(){
             gUnit=otherUnit*5;
             console.log("DEBUG - gUnit4:"+gUnit);
             break;
+            case 5:
+            gUnit=otherUnit*55;
+            console.log("DEBUG - gUnit5:"+gUnit);
+            break;
          }
          $("#gUnit").val(gUnit);
       }
@@ -199,6 +270,19 @@ $(function(){
       path: "js/ZeroClipboard.swf",
       copy: function(){
          return $(this).parent().find("#gUnit").val();
+      },
+      afterCopy:function(){/*复制成功后的操作*/
+         var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+         $("body").find(".copy-tips").remove().end().append($copysuc);
+         $(".copy-tips").fadeOut(2000);
+      }
+   });
+
+   // 查询tsp到g转换表后
+   $(".copy").zclip({
+      path: "js/ZeroClipboard.swf",
+      copy: function(){
+         return $(this).text();
       },
       afterCopy:function(){/*复制成功后的操作*/
          var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
