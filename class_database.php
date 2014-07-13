@@ -38,7 +38,7 @@
  			$this->pwd=sys_conf::$DBPWD;
  			$this->name=sys_conf::$DBNAME;
 
- 			$this->connection=mysql_connect($this->host, $this->user, $this->pwd);	// 连接数据库
+ 			$this->connection=@mysql_connect($this->host, $this->user, $this->pwd);	// 连接数据库
             // echo $this->connection;
  			mysql_select_db($this->name, $this->connection);						// 选择数据库
  			mysql_query("set names utf8");											//选择数据库编码，这句很重要!!!utf8不能写成utf-8否则会出现乱码

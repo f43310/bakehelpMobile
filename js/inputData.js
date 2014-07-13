@@ -782,7 +782,8 @@ $(function(){
       $("input[id^='metric']").on("change",function(){
          // alert(this.id);
          if ($("input[id^='percent']").val()!=""){
-            var rowNum=this.id.substr(-1,1);
+            var patt1 = new RegExp("[0-9]+");
+            var rowNum=patt1.exec(this.id);
             var thisPercent=$("input[id='percent"+rowNum+"']").val();
             var baseMetric=round2(formatNum(this.value/(thisPercent/100),1));
             var i=1;

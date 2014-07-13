@@ -1,5 +1,5 @@
-<?
-	function showAddForm($isSpon)
+<?php
+	function showAddForm()
 	{
 		print("<form method=\"post\" action=\"index.php?action=upsert\">");
 		print("<div data-role=\"fieldcontain\">");
@@ -124,7 +124,7 @@
 			$r->__set(cooktime,$_REQUEST[cooktime]);
 			$r->__set(type,$_REQUEST[recipeType]);
 			$r->add();
-			// print("<script>alert('配方: ".$_REQUEST[rName]." 增加成功!');</script>");
+			// print("<script>alert('配方1: ".$_REQUEST[rName]." 增加成功!');</script>");
 		}
 		// 插入 ingres 表
 		$r=new recipe;
@@ -157,7 +157,7 @@
 		}
 
 		// echo "总量: ".$_REQUEST['sum']." 百分比: ".$_REQUEST['percentSum']." 添加成功！<br />";
-		echo "<script>alert('配方: \"".$_REQUEST[rName]."\" 增加成功!');location.href='index.php';</script>";
+		echo "<script>alert('配方: ".$_REQUEST["rName"]." 增加成功!');location.href='index.php';</script>";
 
 	}
 ?>

@@ -5,7 +5,7 @@
 		echo "参数错误";
 	}
 	$t=new tsptog;
-	$t->__set(tsp,$tsp);
+	$t->__set("tsp",$tsp);
 	$arr_tsptog=$t->query();
 	$qStr="";
 	$t=null;

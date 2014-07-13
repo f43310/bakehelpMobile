@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(E_ALL ^ E_DEPRECATED);
 require("header.php");
 require_once("environmentVar.php");
 require_once("bakehelp.php");
@@ -15,11 +16,15 @@ require_once("bakehelp.php");
 				// echo "loginSuccess: ".$_SESSION["loginSuccess"];				// 测试
 				echo "<script>location='login.php';</script>";
 			}
-			$action=$_REQUEST['action'];
+			if (!isset($_REQUEST["action"])) {
+				$action="none";
+			}else{
+				$action=$_REQUEST["action"];
+			}
+			
 			if ($action=="addNew") {
 				require_once("addRecipes.php");
-				showAddForm($_REQUEST[spon]);
-				
+					showAddForm();		
 			}else if ($action=="upsert") {
 				require_once("addRecipes.php");
 				addRecipes();

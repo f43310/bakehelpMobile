@@ -1,38 +1,41 @@
 <?php
-	session_start();
+	// session_start();
 	// showDetail()
 	function showDetail(){
 		require_once("recipe.php");
 		print("<form method='post' action='index.php?action=saveSonR'>");
 		$r=new recipe;
-		if ($_REQUEST[id] == ""){
+		if ($_REQUEST["id"] == ""){
 			print("信息不完整!");
 			return;
 		}else{
-			$r->__set(id,$_REQUEST[id]);
-			$recipeName=$r->queryRI(name);
-			$instruc=$r->queryRI(instructions);
-			$temperatureU=$r->queryRI(temperatureU);
-			$temperatureD=$r->queryRI(temperatureD);
-			$cooktime=$r->queryRI(cooktime);
-			$recipeType=$r->queryRI(type);
+			$r->__set("id",$_REQUEST["id"]);
+			$recipeName=$r->queryRI("name");
+			$instruc=$r->queryRI("instructions");
+			$temperatureU=$r->queryRI("temperatureU");
+			$temperatureD=$r->queryRI("temperatureD");
+			$cooktime=$r->queryRI("cooktime");
+			$recipeType=$r->queryRI("type");
 			$r=null;
 
 			// 显示配料详情
 			$ingre=new ingre;
-			$ingre->__set(recipeId, $_REQUEST[id]);
+			$ingre->__set("recipeId", $_REQUEST["id"]);
 			$all_ingres=$ingre->queryRID();
 			$ingre=null;
 
 		}
 
-		
-		if($_SESSION["deleted"]==1){
+		if (isset($_SESSION["deleted"])) {
+			if($_SESSION["deleted"]==1){
 			print("<div class='red'>这是垃圾筒内的配方，删除后将无法恢复！</div>");
-			print("<a href='index.php?action=deleteR&id=".$_REQUEST[id]."'>删除此配方</a>");
-		}else{
-			print("<a href='index.php?action=delR&id=".$_REQUEST[id]."'>删除此配方</a>");
+			print("<a href='index.php?action=deleteR&id=".$_REQUEST["id"]."'>删除此配方</a>");
+			}
+		} else {
+			print("<a href='index.php?action=delR&id=".$_REQUEST["id"]."'>删除此配方</a>");
 		}
+		
+
 		
 		print("<table data-role='table' data-mode='reflow' class='ui-body-d table-stripe my-custom-breakpoint'>
 			   <thead>
@@ -84,7 +87,7 @@
 				</li>
 				<li class='ui-field-contain'>
 					<input type='hidden' name='recipeName' id='recipeName' value=\"$recipeName\">
-					<input type='hidden' name='recipeId' id='recipeId' value=\"$_REQUEST[id]\">
+					<input type='hidden' name='recipeId' id='recipeId' value='".$_REQUEST["id"]."'>
 
 					<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>
 						<legend>计算保存:</legend>
@@ -121,7 +124,7 @@
 				</fieldset>
 				</li>
 				<li class='ui-field-contain'>
-					<a href='index.php?action=showSonRecipes&id=".$_REQUEST[id]."'>查看生成的子配方</a>
+					<a href='index.php?action=showSonRecipes&id=".$_REQUEST["id"]."'>查看生成的子配方</a>
 				</li>
 				<li class='ui-field-contain'>
 					<label for='sum'>总产量</label>

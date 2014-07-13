@@ -1,7 +1,7 @@
 <?php
 	require_once("recipe.php");
 	$r=new recipe;
-	$r->__set(name,$_REQUEST["q"]);
+	$r->__set("name",$_REQUEST["q"]);
 	$rows=$r->querySameNameRows();
 	if (!$rows) {
 		echo "<font color=green>名称可用</font>";
