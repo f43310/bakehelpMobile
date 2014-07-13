@@ -44,11 +44,15 @@
 					</tr>");
 			$sum += (float)$item->metric;
 			$percentSum = $item->perSum; 
+			$remark=$item->remark;
 		}
 		print("<tr>
 				<td></td>
-				<td>Sum: $sum</td>
-				<td>PerSum: $percentSum</td>
+				<td>$sum</td>
+				<td>$percentSum</td>
+			</tr>");
+		print("<tr>
+				<td colspan='3'>备注：$remark</td>
 			</tr>");
 		print("</tbody></table>");
 		

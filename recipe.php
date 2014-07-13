@@ -174,6 +174,7 @@
 		private $sum;					// 原料总量
 		private $perSum;				// 百分比总量
 		private $requireSum;
+		private $remark;
 
 		// 方法
 		// __get(): 获取属性值
@@ -201,8 +202,8 @@
  		}
  		function addreq(){
  			$db = new database;
-		 	$sql = "INSERT INTO ingres(name,recipeName,recipeId,metric,percent,sum,perSum,requireSum) ";
-			$sql.= "VALUES ('$this->name','$this->recipeName',$this->recipeId,$this->metric,$this->percent,0,$this->perSum,$this->requireSum)";
+		 	$sql = "INSERT INTO ingres(name,recipeName,recipeId,metric,percent,sum,perSum,requireSum,remark) ";
+			$sql.= "VALUES ('$this->name','$this->recipeName',$this->recipeId,$this->metric,$this->percent,0,$this->perSum,$this->requireSum,'$this->remark')";
  			$db->execute($sql);
  			$db=NULL;
  		}
@@ -261,7 +262,7 @@
  		 // 查询相关配方的保存的需求产量
  		function queryReq(){
  			$db= new database;
- 			$sql = "SELECT requireSum FROM ingres where recipeId=$this->recipeId and requireSum>0 GROUP BY requireSum";
+ 			$sql = "SELECT requireSum,remark FROM ingres where recipeId=$this->recipeId and requireSum>0 GROUP BY requireSum";
  			// echo $sql;								// 调试
  			// exit;
  			$arr_ingres=$db->query($sql);

@@ -86,6 +86,10 @@
 					<input type='number' name='requireSum' id='requireSum'>
 				</li>
 				<li class='ui-field-contain'>
+					<label for='remark'>备  注：</label>
+					<input type='text' name='remark' id='remark'>
+				</li>
+				<li class='ui-field-contain'>
 					<input type='hidden' name='recipeName' id='recipeName' value=\"$recipeName\">
 					<input type='hidden' name='recipeId' id='recipeId' value='".$_REQUEST["id"]."'>
 
@@ -171,117 +175,118 @@
 		// var_dump($_REQUEST);
 		// print("<pre>");
 		// return;
-		if($_REQUEST[submit]=="改名"){
+		if($_REQUEST["submit"]=="改名"){
 			$r=new recipe;
-			$r->__set(id,$_REQUEST[recipeId]);
-			$r->__set(name,$_REQUEST[rName]);
+			$r->__set("id",$_REQUEST["recipeId"]);
+			$r->__set("name",$_REQUEST["rName"]);
 			$r->updateName();
 			$r=null;
 
 			$ingre=new ingre;
-			$ingre->__set(recipeId,$_REQUEST[recipeId]);
-			$ingre->__set(recipeName,$_REQUEST[rName]);
+			$ingre->__set("recipeId",$_REQUEST["recipeId"]);
+			$ingre->__set("recipeName",$_REQUEST["rName"]);
 			$ingre->updateRecipeName();
 			$ingre=null;
-			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 改名 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 改名 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 		
-		}else if($_REQUEST[submit]=="更新其它"){
+		}else if($_REQUEST["submit"]=="更新其它"){
 			$r=new recipe;
-			$r->__set(id,$_REQUEST[recipeId]);
+			$r->__set("id",$_REQUEST["recipeId"]);
 			// $r->__set(name,$_REQUEST[rName]);
-			$r->__set(instructions,$_REQUEST[instruc]);
-			$r->__set(temperatureU,$_REQUEST[temperatureU]);
-			$r->__set(temperatureD,$_REQUEST[temperatureD]);
-			$r->__set(cooktime,$_REQUEST[cooktime]);
+			$r->__set("instructions",$_REQUEST["instruc"]);
+			$r->__set("temperatureU",$_REQUEST["temperatureU"]);
+			$r->__set("temperatureD",$_REQUEST["temperatureD"]);
+			$r->__set("cooktime",$_REQUEST["cooktime"]);
 			$r->updateOther();
 			$r=null;
-			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 更新其它 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
-		}else if ($_REQUEST[submit]=="更新配方"){
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 更新其它 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+		}else if ($_REQUEST["submit"]=="更新配方"){
 			$r=new recipe;
-			$r->__set(id,$_REQUEST[recipeId]);
-			$r->__set(name,$_REQUEST[rName]);
-			$r->__set(instructions,$_REQUEST[instruc]);
-			$r->__set(temperatureU,$_REQUEST[temperatureU]);
-			$r->__set(temperatureD,$_REQUEST[temperatureD]);
-			$r->__set(cooktime,$_REQUEST[cooktime]);
+			$r->__set("id",$_REQUEST["recipeId"]);
+			$r->__set("name",$_REQUEST["rName"]);
+			$r->__set("instructions",$_REQUEST["instruc"]);
+			$r->__set("temperatureU",$_REQUEST["temperatureU"]);
+			$r->__set("temperatureD",$_REQUEST["temperatureD"]);
+			$r->__set("cooktime",$_REQUEST["cooktime"]);
 			$r->update();
 			$r=null;
 
 			$rowsNum=$_REQUEST["rowNum"];
 			for ($i=0; $i <$rowsNum; $i++) { 
 				$ingre=new ingre;
-				$ingre->__set(id,$_REQUEST["ingreId".($i+1)]);
-				$ingre->__set(name,$_REQUEST["ingre".($i+1)]);
-				$ingre->__set(recipeName,$_REQUEST[rName]);
-				$ingre->__set(metric,$_REQUEST["metric".($i+1)]);
-				$ingre->__set(percent,$_REQUEST["percent".($i+1)]);
-				$ingre->__set(sum,$_REQUEST["sum"]);
-				$ingre->__set(perSum,$_REQUEST["percentSum"]);
+				$ingre->__set("id",$_REQUEST["ingreId".($i+1)]);
+				$ingre->__set("name",$_REQUEST["ingre".($i+1)]);
+				$ingre->__set("recipeName",$_REQUEST["rName"]);
+				$ingre->__set("metric",$_REQUEST["metric".($i+1)]);
+				$ingre->__set("percent",$_REQUEST["percent".($i+1)]);
+				$ingre->__set("sum",$_REQUEST["sum"]);
+				$ingre->__set("perSum",$_REQUEST["percentSum"]);
 				$ingre->update();
 				$ingre=null;
 			}
 
 			// 更新原配方后删除所有子配方
 			$ingre=new ingre;
-			$ingre->__set(recipeId,$_REQUEST[recipeId]);
+			$ingre->__set("recipeId",$_REQUEST["recipeId"]);
 			$ingre->delAllSonByRID();
 			$ingre=null;
 			// print("修改成功！<br />");
 			// print("<a href='index.php'>查看结果</a>");
 			// print("<a href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."'>查看结果</a>");
-			print("<script>alert('配方 \"".$_REQUEST[rName]."\" 配方更新 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方更新 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 
-		}else if($_REQUEST[submit]=="保存"){
+		}else if($_REQUEST["submit"]=="保存"){
 			
 			// 要插入ingres表的总行数等于($_REQUEST总数-多余的项)/3
 			// $rowsNum = (count($_REQUEST) - SAVESONEXTRANUM)/3;
 			$rowsNum=$_REQUEST["rowNum"];
 			for($i=1;$i<=$rowsNum;$i++){
 				$ingre=new ingre;
-				$ingre->__set(name,$_REQUEST['ingre'.$i]);
-				$ingre->__set(metric,$_REQUEST['metric'.$i]);
-				$ingre->__set(percent,$_REQUEST['percent'.$i]);
-				$ingre->__set(recipeId,$_REQUEST[recipeId]);
-				$ingre->__set(recipeName,$_REQUEST[recipeName]);
-				$ingre->__set(requireSum,$_REQUEST[requireSum]);
-				$ingre->__set(perSum,$_REQUEST[percentSum]);
+				$ingre->__set("name",$_REQUEST['ingre'.$i]);
+				$ingre->__set("metric",$_REQUEST['metric'.$i]);
+				$ingre->__set("percent",$_REQUEST['percent'.$i]);
+				$ingre->__set("recipeId",$_REQUEST["recipeId"]);
+				$ingre->__set("recipeName",$_REQUEST["recipeName"]);
+				$ingre->__set("requireSum",$_REQUEST["requireSum"]);
+				$ingre->__set("perSum",$_REQUEST["percentSum"]);
+				$ingre->__set("remark",$_REQUEST["remark"]);
 				$ingre->addreq();
 				$ingre=null;
 				
 
 			}
 			print("保存子配方成功！<br />");
-			print("<a href='index.php?action=showSonRecipes&id=".$_REQUEST[recipeId]."'>查看生成的子配方</a>");
+			print("<a href='index.php?action=showSonRecipes&id=".$_REQUEST["recipeId"]."'>查看生成的子配方</a>");
 
-		}else if($_REQUEST[submit]=="保存为新配方"){
+		}else if($_REQUEST["submit"]=="保存为新配方"){
 			// print("<pre>");
 			// var_dump($_REQUEST);
 			// print("</pre>");
 			// return;
 			// 插入 recipes表
 			require_once("recipe.php");
-			if ($_REQUEST[rName]==""||
-				$_REQUEST[sum]==""||
-				$_REQUEST[percentSum]==""){
+			if ($_REQUEST["rName"]==""||
+				$_REQUEST["sum"]==""||
+				$_REQUEST["percentSum"]==""){
 				print("<div class='prompt'>添加失败，请把信息填写完整</div>");
 				print("<a href='javascript:history.go(-1)'>重试</a>");
 			}
 			else{
 				$r=new recipe;
-				$r->__set(name,$_REQUEST[rName]);
-				$r->__set(user_id,$_SESSION["user_id"]);
-				$r->__set(instructions,$_REQUEST[instruc]);
-				$r->__set(temperatureU,$_REQUEST[temperatureU]);
-				$r->__set(temperatureD,$_REQUEST[temperatureD]);
-				$r->__set(cooktime,$_REQUEST[cooktime]);
-				$r->__set(type,$_REQUEST[recipeType]);
+				$r->__set("name",$_REQUEST["rName"]);
+				$r->__set("user_id",$_SESSION["user_id"]);
+				$r->__set("instructions",$_REQUEST["instruc"]);
+				$r->__set("temperatureU",$_REQUEST["temperatureU"]);
+				$r->__set("temperatureD",$_REQUEST["temperatureD"]);
+				$r->__set("cooktime",$_REQUEST["cooktime"]);
+				$r->__set("type",$_REQUEST["recipeType"]);
 				$r->add();
 				// $r=null;
 				// print("<script>alert('配方: ".$_REQUEST[rName]." 增加成功!');</script>");
 			}
 			// 插入 ingres 表
 			// $r=new recipe;
-			$r->__set(name,$_REQUEST[rName]);
+			$r->__set("name",$_REQUEST["rName"]);
 			// echo $r->__get(name);
 			$id=$r->queryId();
 			$r=null;
@@ -309,7 +314,7 @@
 			}
 
 			// echo "总量: ".$_REQUEST['sum']." 百分比: ".$_REQUEST['percentSum']." 添加成功！<br />";
-			echo "<script>alert('配方: ".$_REQUEST[recipeName]." 另存为 ".$_REQUEST[rName]." 成功!');location.href='index.php';</script>";
+			echo "<script>alert('配方: ".$_REQUEST["recipeName"]." 另存为 ".$_REQUEST["rName"]." 成功!');location.href='index.php';</script>";
 
 		}
 		else {
