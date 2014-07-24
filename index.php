@@ -2,8 +2,8 @@
 session_start();
 error_reporting(E_ALL ^ E_DEPRECATED);
 require("header.php");
-require_once("environmentVar.php");
-require_once("bakehelp.php");
+// require_once("environmentVar.php");
+// require_once("bakehelp.php");
 ?>
 <div data-role="page" id="page1">
 	<div data-role="header"><a href='#' data-role='button' data-rel='back'>返回</a><h1>面包师助手</h1><a href='index.php' data-role='button'>首页</a></div>
@@ -46,10 +46,10 @@ require_once("bakehelp.php");
 
 			} else if($action=="delR"){
 				require_once("deleteRecipe.php");
-				dummyDelR($_REQUEST[id]);
+				dummyDelR($_REQUEST["id"]);
 			} else if($action=="deleteR") {
 				require_once("deleteRecipe.php");
-				deleteR($_REQUEST[id]);
+				deleteR($_REQUEST["id"]);
 			} else if($action=="showRecycleBin"){
 				require_once("showRecycleBin.php");
 				if(isset($_REQUEST["delAll"]) && $_REQUEST["delAll"]==1){
@@ -59,7 +59,7 @@ require_once("bakehelp.php");
 				showRecycleBin();
 			} else if ($action=="deleteRR") {
 				require_once("delReqRecipe.php");
-				deleteRR($_REQUEST[id],$_REQUEST[reqsum]);
+				deleteRR($_REQUEST["id"],$_REQUEST["reqsum"]);
 			} else if($action=="help"){
 				require_once("help.php");
 				showHelp();

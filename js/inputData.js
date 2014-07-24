@@ -1,9 +1,8 @@
 // 确保metric列和百分比列输入的都是数字且大于0
 // 全局变量
 var xmlhttp;
+var gU="";
 
-
-//
 
 //格式化数字，输入只能是数字和小数点
 //
@@ -167,6 +166,51 @@ function showHint(str){
 
 }
 
+
+   var isMobile = {
+    Android: function() {
+        return navigator.userAgent.match(/Android/i) ? true : false;
+    },
+    BlackBerry: function() {
+        return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+    },
+    iOS: function() {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+    },
+    Windows: function() {
+        return navigator.userAgent.match(/IEMobile/i) ? true : false;
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
+    }
+};
+
+$(function() { 
+  // $("#jCopy").hide();     // 默认隐藏
+        if( isMobile.any() ) 
+        {
+                $('#zCopy').hide();
+                // $("#jCopy").show();    // 手机浏览器显示
+        }
+
+      // $("#gUnit").on("click",function(){
+      //   gU = $("#gUnit").val();
+      //   console.log("DEBUG - 复制: "+gU);
+      //   // alert("复制成功! "+gU);
+      //    var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+      //    $("body").find(".copy-tips").remove().end().append($copysuc);
+      //    $(".copy-tips").fadeOut(2000);
+      // });
+      // // 为列metric 增加 click 事件
+      // // 考虑到增加一行的情况，所以必须重新加载事件
+      // $("input[id^='metric']").on("click",function(){
+      //   $(this).val(gU);
+      //   console.log("DEBUG - 粘贴1: "+gU);
+      //   gU="";
+        
+      // });
+});
+
 // 查询勺，汤匙,克换算表
 
 function queryG(str){
@@ -180,17 +224,21 @@ function queryG(str){
           console.log("DEBUG - #mySpan:"+xmlhttp.responseText);
          $("#queryGResult").html(xmlhttp.responseText);
             // 查询tsp到g转换表后
-         $(".copy").zclip({
-            path: "js/ZeroClipboard.swf",
-            copy: function(){
-               return $(this).text();
-            },
-            afterCopy:function(){/*复制成功后的操作*/
-               var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
-               $("body").find(".copy-tips").remove().end().append($copysuc);
-               $(".copy-tips").fadeOut(2000);
-            }
-         });
+            if (!isMobile.any()) {
+               // alert("notMobile");
+                  $(".copy").zclip({
+                  path: "js/ZeroClipboard.swf",
+                  copy: function(){
+                     return $(this).text();
+                  },
+                  afterCopy:function(){/*复制成功后的操作*/
+                     var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+                     $("body").find(".copy-tips").remove().end().append($copysuc);
+                     $(".copy-tips").fadeOut(2000);
+                  }
+                });
+            };
+
       }
    });
 }
@@ -279,17 +327,17 @@ $(function(){
    });
 
    // 查询tsp到g转换表后
-   $(".copy").zclip({
-      path: "js/ZeroClipboard.swf",
-      copy: function(){
-         return $(this).text();
-      },
-      afterCopy:function(){/*复制成功后的操作*/
-         var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
-         $("body").find(".copy-tips").remove().end().append($copysuc);
-         $(".copy-tips").fadeOut(2000);
-      }
-   });
+   // $(".copy").zclip({
+   //    path: "js/ZeroClipboard.swf",
+   //    copy: function(){
+   //       return $(this).text();
+   //    },
+   //    afterCopy:function(){/*复制成功后的操作*/
+   //       var $copysuc=$("<div class='copy-tips'><div class='copy-tips-wrap'>☺ 复制成功</div></div>");
+   //       $("body").find(".copy-tips").remove().end().append($copysuc);
+   //       $(".copy-tips").fadeOut(2000);
+   //    }
+   // });
 });
 
 // 计算百分比方法
@@ -614,6 +662,13 @@ function add(){
       $("input[type='number']").attr("step", "0.01");
           // 增加require属性
         $("#tab input").attr('required', true);
+        // 重新增加 click 事件
+      $("input[id='metric"+_len+"']").on("click",function(){
+        $(this).val(gU);
+        console.log("DEBUG - 粘贴2: "+gU);
+        gU="";
+
+      });
 
 }
 
@@ -642,13 +697,15 @@ $(function(){
    //
    var deltr = function(index){
          var _len = $("tbody tr").length;
-         console.log("DEBUG del - _len: " + _len);       // 调试
+         console.log("DEBUG del - tr _len: " + _len);       // 调试
          $("tr[id='"+index+"']").remove();      // 删除当前行
-         console.log("DEBUG del - index: " + index);       // 调试
-         for(var i=index,j=_len;i<=j;i++){
+         console.log("DEBUG del -deltr index: " + index);       // 调试
+         for(var i=index+1,j=_len;i<=j;i++){
             var nextTxtVal1 = $("#ingre"+i).val();
             var nextTxtVal2 = $("#metric"+i).val();
             var nextTxtVal3 = $("#percent"+i).val();
+            console.log("DEBUG - metric-val:" +$("#metric"+i).val());
+            console.log("DEBUG del -before_replace i: " + i);       // 调试
             $("tr[id='"+i+"']")
                .replaceWith("<tr id='"+(i-1)+"'>"
                   +"<td><div data-role='fieldcontain'><input type='text' name='ingre"+(i-1)+"' id='ingre"+(i-1)+"' value='"+nextTxtVal1+"' data-mini='true'></div></td>"
@@ -656,7 +713,13 @@ $(function(){
                   +"<td><div data-role='fieldcontain'><input type='number' name='percent"+(i-1)+"' id='percent"+(i-1)+"' value='"+nextTxtVal3+"' data-mini='true'></div></td>"
                   +"<td><a href='#' data-role='button' data-mini='true' onclick='deltr("+(i-1)+")'>删</a></td>"
                   +"</tr>");
-               console.log("DEBUG del - i: " + i);       // 调试
+               console.log("DEBUG del -after_replace i: " + (i-1));       // 调试
+                // 重新增加 click 事件
+              $("input[id='metric"+(i-1)+"']").on("click",function(){
+                $(this).val(gU);
+                console.log("DEBUG - 粘贴3: "+gU);
+                gU="";
+              });
          }
          $("tbody").trigger("create");
          $("#tab").table("rebuild");
@@ -1087,3 +1150,5 @@ $(function(){
       }
    });
 });
+
+

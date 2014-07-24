@@ -18,7 +18,7 @@
  		// __get(): 获取属性值
  		function __get($property_name){
  			if (isset($property_name)){
- 				return $this->property_name;
+ 				return $this->$property_name;		// 这里的 property_name 前必须加 $ 否则 错误!
  			}else{
  				return null;
  			}
@@ -27,7 +27,7 @@
 
  		// __set(): 设置属性值
  		function __set($property_name, $value){
- 			$this->property_name=$value;
+ 			$this->$property_name=$value;			// 这里的 property_name 前必须加 $ 否则 错误!
 
  		}
 
@@ -55,8 +55,8 @@
  		}// execute
 
  		 // 查：参数$sql 为 select 语句 结果为单条
- 		function executeSFOR($sql){
- 			$oneResult=mysql_query($sql, $this->connection);
+		function executeSFOR($sql){
+		$oneResult=mysql_query($sql, $this->connection);
  			return mysql_fetch_object($oneResult);
  		}// execute
 

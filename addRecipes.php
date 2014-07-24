@@ -38,6 +38,7 @@
 						</select>
 						<input type=\"number\" name='gUnit' id='gUnit' data-role='none'/>
 						<input type=\"button\" name='zCopy' id='zCopy' value='复制'  data-role='none'/>
+
 						<a href='#pop1' data-rel='popup' data-transition='pop' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-mini'>Qyery g</a>
 					<div data-role='popup' id='pop1'>
 						

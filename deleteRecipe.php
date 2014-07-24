@@ -6,13 +6,13 @@ function deleteR($recipeId){
 	}
 	else{
 		$r=new recipe;
-		$r->__set(id,$recipeId);
+		$r->__set("id",$recipeId);
 		$r->delete();
 		// echo "配方表删除成功!<br />";
 		$r=null;
 
 		$ingre=new ingre;
-		$ingre->__set(recipeId,$recipeId);
+		$ingre->__set("recipeId",$recipeId);
 		$ingre->delete();
 		
 		$ingre=null;
@@ -27,7 +27,7 @@ function dummyDelR($recipeId){
 	}
 	else{
 		$r=new recipe;
-		$r->__set(id,$recipeId);
+		$r->__set("id",$recipeId);
 		$r->switchDel("deleted=1");
 		// echo "配方表删除成功!<br />";
 		$r=null;
