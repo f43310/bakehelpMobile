@@ -92,5 +92,14 @@
 			$db->execute($sql);
 			$db = null;
 		}
+
+		// query now
+		function queryNow(){
+			$db = new database;
+			$sql = "SELECT *FROM units where name like '%$this->name%' and otherUnit like '%$this->otherUnit%' and quantity like '%$this->quantity%'";
+			$arr_units = $db->query($sql);
+			$db=null;
+			return $arr_units;
+		}
 	}
 ?>

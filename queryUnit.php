@@ -40,7 +40,7 @@
 		?>
 	</div>
 	<div data-role="footer">
-		将其它单位换算成克
+			<a href='index.php' data-role='button' data-ajax='false'>烘焙助手</a><h1>将其它单位换算成克</h1>
 	</div>
 </div>
 

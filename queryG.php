@@ -1,16 +1,21 @@
 <?php
-	require_once("tspTog.php");
-	$tsp=$_REQUEST["tsp"];
-	if(!isset($tsp)){
-		echo "参数错误";
-	}
-	$t=new tsptog;
-	$t->__set("tsp",$tsp);
-	$arr_tsptog=$t->query();
+	require_once("class_unit.php");
+	$quantity=$_REQUEST["num"];
+	$otherUnit = $_REQUEST["unit"];
+	// if($quantity==""){
+	// 	$quantity="";
+	// }else if($otherUnit==""){
+	// 	$otherUnit="";
+	// }
+	$t=new unit;
+	$t->__set("name",$_REQUEST["name"]);
+	$t->__set("quantity",$quantity);
+	$t->__set("otherUnit",$otherUnit);
+	$arr_tsptog=$t->queryNow();
 	$qStr="";
 	$t=null;
 	foreach ($arr_tsptog as $item) {
-		$qStr .= "<p>$item->tsp = <a href='#none' class='copy'>$item->g</a></p>\n";
+		$qStr .= "<p>$item->name".$item->quantity."$item->otherUnit = <a href='#none' class='copy'>$item->gQuantity</a></p>\n";
 	}
 
 	if($qStr==""){

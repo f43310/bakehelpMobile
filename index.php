@@ -86,6 +86,7 @@ require("header.php");
 	<div data-role="footer">
 		<div data-role='controlgroup' data-type='horizontal'>
 			<a href='exit.php' data-role='button' data-ajax='false'>退出</a>
+			<a href='queryUnit.php' target='_blank' data-role='button' data-ajax='false'>单位转换</a>
 			<a href='index.php?action=help' data-role='button' data-ajax='false'>帮助</a>
 			<a href='index.php?action=lianxi' data-role='button' data-ajax='false'>联系我们</a>
 		</div>

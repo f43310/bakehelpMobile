@@ -213,13 +213,17 @@ $(function() {
 
 // 查询勺，汤匙,克换算表
 
-function queryG(str){
-   if(str.length==0){
+function queryG(name,num,unit){
+   if(name.length==0&&num.length==0&&unit.length==0){
       $("#queryG").val("");
       return;
+   }else if(num.length==0){
+      num = "";
+   }else if(unit.length==0){
+      unit = "";
    }
 
-   loadXMLDoc("queryG.php?tsp="+str,function(){
+   loadXMLDoc("queryG.php?name="+name+"&num="+num+"&unit="+unit,function(){
       if(xmlhttp.readyState==4 && xmlhttp.status==200){
           console.log("DEBUG - #mySpan:"+xmlhttp.responseText);
          $("#queryGResult").html(xmlhttp.responseText);
@@ -262,7 +266,15 @@ $(function(){
    });
 
    $("#queryG").on("change keyup",function(){
-      queryG(this.value);
+      var str=$.trim(this.value);
+      var arr_str = str.split(" ",3);
+      if(arr_str.length==1){
+          arr_str[1]="";
+          arr_str[2]="";
+      }else if(arr_str.length==2){
+          arr_str[2]="";
+      }
+      queryG(arr_str[0],arr_str[1],arr_str[2]);
    });
 
    // 验证表单
@@ -663,13 +675,18 @@ function add(){
           // 增加require属性
         $("#tab input").attr('required', true);
         // 重新增加 click 事件
-      $("input[id='metric"+_len+"']").on("click",function(){
-        $(this).val(gU);
-        console.log("DEBUG - 粘贴2: "+gU);
-        gU="";
+      // $("input[id='metric"+_len+"']").on("click",function(){
+      //   $(this).val(gU);
+      //   console.log("DEBUG - 粘贴2: "+gU);
+      //   gU="";
 
-      });
-
+      // });
+       
+        // 手机上关闭 clearBtn
+      if(isMobile.any() ){
+        $("#tab input").textinput({clearBtn:false});
+        $("#tab input").textinput("refresh");
+      }
 }
 
 
@@ -970,7 +987,7 @@ $(function(){
 
             }else if(this.id=="inputType3"){
                // alert(this.id+"这个被选中");
-               $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
+               // $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
                $("div[id^='control']").replaceWith("<div data-role=\"controlgroup\" data-type=\"horizontal\" id='control3'>"
                   +"<input type=\"button\" name=\"add\" id=\"add\" value=\"增加一行\" data-inline=\"true\" data-mini=\"true\">"
                   +"<input type=\"button\" name=\"calculateSum\" id=\"calculateSum\" value=\"计算总百分比\" data-mini=\"true\" data-inline=\"true\" >"
@@ -983,7 +1000,7 @@ $(function(){
 
                $("#add").on("click",function(){
                   add();
-                  $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
+                  // $("input[id^='metric']").attr("disabled","disabled").textinput("refresh");
                });
 
                $("#calculateSum").on("click",function(){
@@ -1151,4 +1168,10 @@ $(function(){
    });
 });
 
-
+// 这句要放未尾
+$(function(){
+    if(isMobile.any() ){
+        $("#tab input").textinput({clearBtn:false});
+        $("#tab input").textinput("refresh");
+    }
+});
