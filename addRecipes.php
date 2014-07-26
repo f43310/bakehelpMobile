@@ -1,7 +1,8 @@
 <?php
 	function showAddForm()
 	{
-		print("<form method=\"post\" action=\"index.php?action=upsert\">");
+		print("<form data-ajax='false' enctype='multipart/form-data' method=\"post\" action=\"index.php?action=upsert\">");
+		print "<div data-role='fieldset'>";
 		print("<div data-role=\"fieldcontain\">");
 		print("<label for=\"rName\" class=\"ui-hidden-accessible\">配方名称</label>");
 		print("<input type=\"text\" name=\"rName\" id=\"rName\" placeholder=\"配方名称\" data-clear-btn=\"true\" required=\"required\">");
@@ -73,8 +74,23 @@
 
 			print("	<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\" data-inline=\"true\">clearP</a>
 				<input type='hidden' name='recipeType' id='recipeType' value='1'>
-				</div>
-					<ui data-role=\"listview\"  data-inset=\"true\">
+				</div>");
+
+			/*上传图片 -- Begin */
+			print "<div id='upload'>";
+			print "<input type='hidden' name='MAX_FILE_SIZE' value='500000'/>";
+			print "<button type='button' id='addUp' name='addUp' data-inline='true'>增加</button>";
+			print "<div data-role='fieldcontain'>";
+			print "<label for='recipe_image[]'>选择图片:&nbsp;&nbsp;<a href='#' id='rmlink'>X</a></label>";
+			print "<input type='file' name='recipe_image[]'>";
+			print "</div>";
+			
+			// print "<button type='button' id='delUp' name='delUp' data-inline='true'>删除</button>";
+			print "</div>";
+
+			/*上传图片 --End */
+
+			print ("<ui data-role=\"listview\"  data-inset=\"true\">
 						<li class=\"ui-field-contain\">
 							<label for=\"instruc\">制作步骤:</label>
 							<textarea name=\"instruc\" id=\"instruc\" cols=\"40\" rows=\"8\" data-mini=\"true\" data-inline=\"true\"></textarea>
@@ -95,11 +111,27 @@
 
 				<input type=\"submit\" name=\"save\" id=\"save\" value=\"保  存\" data-mini=\"true\">
 			   ");
-
+		print "</div>";
 		print("</form>");
 
 
 	}
+	// 外国人写的转换$_FILES[] 数组结构的函数
+	function reArrayFiles(&$file_post) {
+
+	    $file_ary = array();
+	    $file_count = count($file_post['name']);
+	    $file_keys = array_keys($file_post);
+
+	    for ($i=0; $i<$file_count; $i++) {
+	        foreach ($file_keys as $key) {
+	            $file_ary[$i][$key] = $file_post[$key][$i];
+	        }
+	    }
+
+	    return $file_ary;
+	}
+
 
 	function addRecipes()
 	{
@@ -107,6 +139,11 @@
 		// var_dump($_REQUEST);
 		// print("</pre>");
 		// return;
+		// var_dump(iconv_get_encoding('all'));
+		// return;
+
+
+
 		// 插入 recipes表
 		require_once("recipe.php");
 		if ($_REQUEST[rName]==""||
@@ -133,6 +170,103 @@
 		// echo $r->__get(name);
 		$id=$r->queryId();
 		$r=null;
+
+
+		/*上传图片配置 --Begin*/
+		$max_photo_size = 500000;	// 请求上传不能超过500kB
+		$upload_required = true;
+
+		$upload_page = "index.php?action=addNew";
+		$upload_dir = "fileupl/";
+
+		/*上传图片配置 --End*/
+
+		/* 上传程序 --Begin*/
+		// 文件域是否存在
+		// print("<pre>");
+		// print_r($_FILES['recipe_image']);
+		// print("</pre>");
+		// return;
+
+		if (!isset($_FILES['recipe_image'])){
+			
+			print "This form was not sent in completely.";
+			return;
+		}else{
+			$file_ary =reArrayFiles($_FILES['recipe_image']);
+			foreach ($file_ary as $file) {
+				# code...
+				$err_msg = false;
+				do{
+					/*检查我们能够获取的所有可能出现的错误号*/
+					switch ($file['error']) {
+						case UPLOAD_ERR_INI_SIZE:
+								$err_msg = 'The size of the image is too large, '.
+								"it can not be more than $max_photo_size bytes.";
+							break 2;
+
+						case UPLOAD_ERR_PARTIAL:
+							$err_msg = 'An error ocurred while uploading the file, '.
+								"please <a href='{$upload_page}'>try again</a>.";
+							break 2;
+
+						case UPLOAD_ERR_NO_FILE:
+							if($upload_required){
+								$err_msg = 'You did not select a file to be upload, '.
+								"please do so <a href='{$upload_page}'>here</a>.";
+								break 2;
+							}
+							break 2;
+							
+
+						case UPLOAD_ERR_FORM_SIZE:
+								$err_msg = 'The size was too large according to '.
+									"the MAX_FILE_SIZE hidden field in the upload form.";
+								case UPLOAD_ERR_OK:
+								if ($file['size'] > $max_photo_size) {
+									$err_msg = 'The size of the image is too large.'.
+										"it can not be more than $max_photo_size bytes.";
+								}
+							break 2;
+						
+						default:
+							$err_msg = 'An unknown error occurred, '.
+								"please try again <a href='{$upload_page}'>here</a>.";
+					}
+
+					/*注意检查mime 类型是否正确.我们允许jpg,gif,png*/
+					if(!in_array($file['type'], array('image/jpeg','image/pjpeg','image/png','image/gif'))){
+						$err_msg = 'You need to upload a PNG or JPEG image, '.
+						"please do so <a href='{$upload_page}'>here</a>.";
+						break;
+					}
+				} while(0);
+
+				if (!$err_msg) {
+					if(!@move_uploaded_file($file['tmp_name'], $upload_dir.iconv("utf-8", "gbk", $file['name']))){
+						$err_msg = 'Error moving the file to its destination, '.
+							"please try again <a href='{$upload_page}'>here</a>.";
+					}
+				}
+
+
+				if ($err_msg) {
+					echo $err_msg;
+				}else{
+					/*将上传的文件路径保存到数据库 recImg 表*/
+					require_once("class_recimg.php");
+					$img = new recimg;
+					$img->__set("recipeId",$id);
+					$img->__set("imgpath",$upload_dir.$file["name"]);
+					$img->addNew();
+					$img=NULL;
+					print "<img src='".$upload_dir.$file["name"]."'/>";
+				}
+			}
+		}
+
+		/* 上传程序 --End*/
+
 		// echo $id;
 		// return;
 
@@ -158,7 +292,7 @@
 		}
 
 		// echo "总量: ".$_REQUEST['sum']." 百分比: ".$_REQUEST['percentSum']." 添加成功！<br />";
-		echo "<script>alert('配方: ".$_REQUEST["rName"]." 增加成功!');location.href='index.php';</script>";
+		// echo "<script>alert('配方: ".$_REQUEST["rName"]." 增加成功!');location.href='index.php';</script>";
 
 	}
 ?>

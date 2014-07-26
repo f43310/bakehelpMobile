@@ -1175,3 +1175,32 @@ $(function(){
         $("#tab input").textinput("refresh");
     }
 });
+
+// 上传图片
+
+function bindListener(){
+
+      $("a[id='rmlink']").click(function(event) {
+      /* Act on the event */
+      // alert(del);
+        $(this).parent().parent().remove();
+        $("#upload").trigger('create');
+      });
+}
+
+
+$(function(){
+  $("#addUp").click(function() {
+    /* Act on the event */
+    $("#upload").append("<div data-role='fieldcontain'><label for='recipe_image[]'>选择图片:&nbsp;&nbsp;<a href='#' id='rmlink'>X</a></label><input type='file' name='recipe_image[]'></div>");
+    $("#upload").trigger('create');
+    // $("#upload").textinput("refresh");
+    // 绑定事件
+    bindListener();
+
+  });
+
+  // 初始化时加载事件
+  bindListener();
+
+});

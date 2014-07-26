@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL ^ E_DEPRECATED);
+error_reporting(E_ALL ^ E_DEPRECATED ^ E_NOTICE);
 require("header.php");
 // require_once("environmentVar.php");
 // require_once("bakehelp.php");

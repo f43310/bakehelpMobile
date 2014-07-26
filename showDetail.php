@@ -3,7 +3,7 @@
 	// showDetail()
 	function showDetail(){
 		require_once("recipe.php");
-		print("<form method='post' action='index.php?action=saveSonR'>");
+		print("<form data-ajax='false' method='post' action='index.php?action=saveSonR'>");
 		$r=new recipe;
 		if ($_REQUEST["id"] == ""){
 			print("信息不完整!");
@@ -165,6 +165,17 @@
 
 			  </ul>
 			");
+
+		// 显示图像
+		require_once("class_recimg.php");
+		$img = new recimg;
+		$img->__set("recipeId",$_REQUEST['id']);
+		$arr_img = $img->query();
+		$img=null;
+		foreach ($arr_img as $item) {
+			print "<a target='_blank' href='".$item->imgpath."'><img src='".$item->imgpath."'></a>\n";
+		}
+
 		print("</form>");
 	}
 

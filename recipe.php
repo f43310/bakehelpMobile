@@ -51,7 +51,7 @@
  			$sql.= "VALUES ('$this->name',$this->user_id,'$this->instructions',$this->temperatureU,$this->temperatureD,$this->cooktime,$this->type)";
  			// var_dump($this->name);			// 调试
  			// echo $this->name."<br />";	    // 调试
- 			echo $sql."<br />";				// 调试
+ 			// echo $sql."<br />";				// 调试
  			// exit;							// 调试
 			$db->execute($sql);
  			$db=NULL;
