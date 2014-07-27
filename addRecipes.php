@@ -79,10 +79,10 @@
 			/*上传图片 -- Begin */
 			print "<div id='upload'>";
 			print "<input type='hidden' name='MAX_FILE_SIZE' value='500000'/>";
-			print "<button type='button' id='addUp' name='addUp' data-inline='true'>增加</button>";
-			print "<div data-role='fieldcontain'>";
-			print "<label for='recipe_image[]'>选择图片:&nbsp;&nbsp;<a href='#' id='rmlink'>X</a></label>";
-			print "<input type='file' name='recipe_image[]'>";
+			print "<button type='button' id='addUp' name='addUp' data-inline='true'>增加上传图片</button>";
+			// print "<div data-role='fieldcontain'>";
+			// print "<label for='recipe_image[]'>选择图片:&nbsp;&nbsp;<a href='#' id='rmlink'>X</a></label>";
+			// print "<input type='file' name='recipe_image[]'>";
 			print "</div>";
 			
 			// print "<button type='button' id='delUp' name='delUp' data-inline='true'>删除</button>";
@@ -97,15 +97,15 @@
 						</li>
 						<li class=\"ui-field-contain\">
 							<label for=\"temperatureU\">烘烤温度(上火):</label>
-							<input type=\"range\" name=\"temperatureU\" id=\"temperatureU\" value=\"100\" min=\"100\" max=\"300\">
+							<input type=\"range\" name=\"temperatureU\" id=\"temperatureU\" value=\"100\" min=\"100\" max=\"300\" data-highlight='true'>
 						</li>
 						<li class=\"ui-field-contain\">
 							<label for=\"temperatureD\">烘烤温度(下火):</label>
-							<input type=\"range\" name=\"temperatureD\" id=\"temperatureD\" value=\"100\" min=\"100\" max=\"300\">
+							<input type=\"range\" name=\"temperatureD\" id=\"temperatureD\" value=\"100\" min=\"100\" max=\"300\" data-highlight='true'>
 						</li>
 						<li class=\"ui-field-contain\">
 							<label for=\"cooktime\">烤制时间:</label>
-							<input type=\"range\" name=\"cooktime\" id=\"cooktime\" value=\"0\" min=\"0\" max=\"60\">
+							<input type=\"range\" name=\"cooktime\" id=\"cooktime\" value=\"0\" min=\"0\" max=\"60\" data-highlight='true'>
 						</li>
 					</ui>
 
@@ -187,11 +187,13 @@
 		// print_r($_FILES['recipe_image']);
 		// print("</pre>");
 		// return;
+	do{
+
 
 		if (!isset($_FILES['recipe_image'])){
 			
 			print "This form was not sent in completely.";
-			return;
+			break;
 		}else{
 			$file_ary =reArrayFiles($_FILES['recipe_image']);
 			foreach ($file_ary as $file) {
@@ -264,6 +266,7 @@
 				}
 			}
 		}
+	}while(0);
 
 		/* 上传程序 --End*/
 
@@ -293,6 +296,8 @@
 
 		// echo "总量: ".$_REQUEST['sum']." 百分比: ".$_REQUEST['percentSum']." 添加成功！<br />";
 		// echo "<script>alert('配方: ".$_REQUEST["rName"]." 增加成功!');location.href='index.php';</script>";
+		print("<br />保存配方成功！<br />");
+		print("<a href='index.php'>查看配方</a>");
 
 	}
 ?>

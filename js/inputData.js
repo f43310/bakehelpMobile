@@ -24,13 +24,25 @@ function formatNum(str,num){
 }
 
 // function小数点后一位四舍五入
-//
+// 方法一
+// function round2(str){
+//    var s = parseFloat(str.substr(-1,1));
+//    if (s<5){
+//       return str.replace(/[1-9]$/,"5");      /// [1-9]$/
+//    }else {
+//       return str.replace(/[1-9]$/,"9");      //
+//    }
+
+// }
+// 方法二
 function round2(str){
    var s = parseFloat(str.substr(-1,1));
+   var p = parseFloat(str.substr(0,str.indexOf('.')));
    if (s<5){
-      return str.replace(/[1-9]$/,"0");      /// [1-9]$/
+      return str.replace(/[1-9]$/,"5");      /// [1-9]$/
    }else {
-      return str.replace(/[1-9]$/,"5");      //
+      // str.replace(/[1-9]$/,"0");      //
+      return (p+1).toString();
    }
 
 }
@@ -681,6 +693,12 @@ function add(){
       //   gU="";
 
       // });
+
+      //去除 tempUp tempD cooktime step
+
+      $("#temperatureU").removeAttr('step');
+      $("#temperatureD").removeAttr('step');
+      $("#cooktime").removeAttr('step');
        
         // 手机上关闭 clearBtn
       if(isMobile.any() ){
@@ -821,6 +839,11 @@ $(function(){
    // 添加 step验证
    $(function(){
       $("input[type='number']").attr("step", "0.01");
+
+      //去除 tempUp tempD cooktime step
+      $("#temperatureU").removeAttr('step');
+      $("#temperatureD").removeAttr('step');
+      $("#cooktime").removeAttr('step');
    });
 
    // showDetail.php 生成子配方

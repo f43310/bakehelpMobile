@@ -222,7 +222,8 @@
  		function deleteRR(){
  			$db = new database;
  			$sql = "DELETE FROM ingres ";
- 			$sql.= "WHERE recipeId=$this->recipeId and requireSum=$this->requireSum";
+ 			$sql.= "WHERE recipeId=$this->recipeId and LTRIM(requireSum)=".LTRIM($this->requireSum);
+ 			// echo $sql;
  			$db->execute($sql);
  			$db=NULL;
  		}
