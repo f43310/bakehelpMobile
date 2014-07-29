@@ -272,14 +272,25 @@
  		}
 
  		 // query
- 		function queryReqIngres($req){
+ 		function queryReqIngres(){
  			$db= new database;
- 			$sql = "SELECT *FROM ingres where recipeId=$this->recipeId and LTRIM(requireSum)=".LTRIM($req)." and sum=0";
+ 			$sql = "SELECT *FROM ingres where recipeId=$this->recipeId and LTRIM(requireSum)=".LTRIM($this->requireSum)." and sum=0";
             // echo $sql;								// 调试
  			// exit;
  			$arr_ingres=$db->query($sql);
  			return $arr_ingres;
  			$db=NULL;
+ 		}
+
+ 		// querySameRq
+ 		function querySameRq(){
+ 			$db= new database;
+ 			$sql = "SELECT *FROM ingres where recipeId=$this->recipeId and LTRIM(requireSum)=".LTRIM($this->requireSum);
+            // echo $sql;								// 调试
+ 			// exit;
+ 			$rowsNum=$db->queryRows($sql);
+ 			return $rowsNum;
+ 			$db=null;
  		}
 
  		// update showDetail.php 的更新,只更新

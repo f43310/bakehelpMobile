@@ -227,7 +227,7 @@ $(function() {
 
 function queryG(name,num,unit){
    if(name.length==0&&num.length==0&&unit.length==0){
-      $("#queryG").val("");
+      $("#queryGResult").html("");
       return;
    }else if(num.length==0){
       num = "";
@@ -1182,7 +1182,7 @@ $(function(){
       var formula = this.value;
       if(patt1.test(formula)){
          console.log("DEBUG - #sum的表达式为: "+formula);
-         var calcResult = calcBasic(formula);
+         var calcResult = formatNum(calcBasic(formula),2);
          console.log("DEBUG - #sum的表达式计算后为: "+calcResult);
          $("#requireSum").val(calcResult);
       }else{
@@ -1211,7 +1211,7 @@ function bindListener(){
       });
 }
 
-
+// 增加上传图片控件
 $(function(){
   $("#addUp").click(function() {
     /* Act on the event */
@@ -1226,4 +1226,33 @@ $(function(){
   // 初始化时加载事件
   bindListener();
 
+});
+
+
+//
+function showHintRq(str,id){
+   if (str.length==0) {
+      $("span[id='hint']").html("");
+      console.log("DEBUG - #requireSum:"+'空');
+   return;
+   };
+   loadXMLDoc("queryDoubleRq.php?q="+str+"&id="+id,function(){
+      if(xmlhttp.readyState==4 && xmlhttp.status==200){
+         console.log("DEBUG - #requireSum:"+xmlhttp.responseText);
+         $("span[id='hint']").html(xmlhttp.responseText);
+      }
+   });
+
+}
+
+
+// ajax 查询有无重复需求量
+//
+$(function(){
+  $("#requireSum").on("change keyup click",function(){
+    // alert();
+      var search = window.location.search;
+      var id = search.substr(search.lastIndexOf("=")+1);
+      showHintRq(this.value,id);
+  });
 });

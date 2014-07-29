@@ -82,7 +82,7 @@
 
 		print("<ul data-role='listview' data-inset='true'>
 				<li class='ui-field-contain'>
-					<label for='requireSum'>需求总量</label>
+					<label for='requireSum'>需求总量:&nbsp;&nbsp;&nbsp;<span id='hint' style='background:#FF0;font-weight:bold'></span></label>
 					<input type='number' name='requireSum' id='requireSum'>
 				</li>
 				<li class='ui-field-contain'>
@@ -325,7 +325,8 @@
 			}
 
 			// echo "总量: ".$_REQUEST['sum']." 百分比: ".$_REQUEST['percentSum']." 添加成功！<br />";
-			echo "<script>alert('配方: ".$_REQUEST["recipeName"]." 另存为 ".$_REQUEST["rName"]." 成功!');location.href='index.php';</script>";
+			echo "<script>alert('配方: ".$_REQUEST["recipeName"]." 另存为 ".$_REQUEST["rName"]." 成功!');</script>";
+			echo "<script>location.href='index.php';</script>";
 
 		}
 		else {

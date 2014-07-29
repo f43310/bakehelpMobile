@@ -16,7 +16,8 @@
 
 		$ingre=new ingre;
 		$ingre->__set("recipeId",$_REQUEST["id"]);
-		$allReqIngres=$ingre->queryReqIngres($reqSum);
+		$ingre->__set("requireSum",$reqSum);
+		$allReqIngres=$ingre->queryReqIngres();
 		$ingre=null;
 		print("<table id=\"tab\" data-role=\"table\" data-mode=\"reflow\" class=\"ui-body-d table-stripe my-custom-breakpoint\">
 				<thead>

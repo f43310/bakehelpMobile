@@ -8,8 +8,8 @@
 	
 	require_once("user_class.php");
 	$user=new user;
-	$user->__set(username,$username_S);
-	$user->__set(password,$password);
+	$user->__set("username",$username_S);
+	$user->__set("password",$password);
 	$rows=$user->queryRows();
 
 
@@ -20,7 +20,8 @@
 			if ($item->password==$password){
 				$_SESSION["loginSuccess"]=1;
                 $_SESSION["user_id"]=$item->user_id;
-                // echo $_SESSION["user_id"]."222222";
+                // echo $_SESSION["loginSuccess"]."_1111";
+                // echo $_SESSION["user_id"]."__222222";
                 // return;
                 echo "<script>location='index.php';</script>";
 			}
