@@ -41,13 +41,12 @@
 						<input type=\"button\" name='zCopy' id='zCopy' value='复制'  data-role='none'/>
 
 						<a href='#pop1' data-rel='popup' data-transition='pop' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-mini'>Qyery g</a>
-					<div data-role='popup' id='pop1'>
-						
-						<ul data-role='listview' data-inset='true'>
-							<li data-role='fieldcontain'><input type=\"text\" name='queryG' id='queryG' value='' data-mini='true'/></li>
-							<li data-role='fieldcontain' id='queryGResult'></li>
-						</ul>
-				</div>
+						<div data-role='popup' id='pop1'>
+							<ul data-role='listview' data-inset='true'>
+								<li data-role='fieldcontain'><input type=\"text\" name='queryG' id='queryG' value='' data-mini='true'/></li>
+								<li data-role='fieldcontain' id='queryGResult'></li>
+							</ul>
+						</div>
 				</div>");
 		print("<table id=\"tab\" data-role=\"table\" data-mode=\"reflow\" class=\"ui-body-d table-stripe my-custom-breakpoint\">");
 		print("<thead>
@@ -74,7 +73,7 @@
 
 			print("	<a href=\"#\" data-role=\"button\" onclick=\"clearPercentCol()\" data-inline=\"true\">clearP</a>
 				<input type='hidden' name='recipeType' id='recipeType' value='1'>
-				</div>");
+			   </div>");
 
 			/*上传图片 -- Begin */
 			print "<div id='upload'>";
@@ -86,7 +85,7 @@
 			print "</div>";
 			
 			// print "<button type='button' id='delUp' name='delUp' data-inline='true'>删除</button>";
-			print "</div>";
+			// print "</div>";
 
 			/*上传图片 --End */
 
@@ -111,7 +110,7 @@
 
 				<input type=\"submit\" name=\"save\" id=\"save\" value=\"保  存\" data-mini=\"true\">
 			   ");
-		print "</div>";
+		// print "</div>";
 		print("</form>");
 
 

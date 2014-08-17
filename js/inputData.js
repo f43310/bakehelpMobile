@@ -226,13 +226,13 @@ $(function() {
 // 查询勺，汤匙,克换算表
 
 function queryG(name,num,unit){
-   if(name.length==0&&num.length==0&&unit.length==0){
+    // 设置默认参数
+    if (!arguments[1]) num = "";
+    if (!arguments[2]) unit = "";
+
+   if(name.length == 0 && num.length == 0 && unit.length == 0){
       $("#queryGResult").html("");
       return;
-   }else if(num.length==0){
-      num = "";
-   }else if(unit.length==0){
-      unit = "";
    }
 
    loadXMLDoc("queryG.php?name="+name+"&num="+num+"&unit="+unit,function(){
@@ -278,14 +278,10 @@ $(function(){
    });
 
    $("#queryG").on("change keyup",function(){
-      var str=$.trim(this.value);
+      // var str=$.trim(this.value);
+      var str = this.value;
       var arr_str = str.split(" ",3);
-      if(arr_str.length==1){
-          arr_str[1]="";
-          arr_str[2]="";
-      }else if(arr_str.length==2){
-          arr_str[2]="";
-      }
+
       queryG(arr_str[0],arr_str[1],arr_str[2]);
    });
 
