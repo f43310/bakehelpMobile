@@ -37,8 +37,9 @@
 			");
 		$sum=0;
 		$percentSum=0;
+		$id = 1;
 		foreach ($allReqIngres as $item) {
-			print("<tr>
+			print("<tr id='row".$id."'>
 						<td>$item->name</td>
 						<td>$item->metric</td>
 						<td>$item->percent</td>
@@ -46,6 +47,7 @@
 			$sum += (float)$item->metric;
 			$percentSum = $item->perSum; 
 			$remark=$item->remark;
+			$id++;
 		}
 		print("<tr>
 				<td></td>

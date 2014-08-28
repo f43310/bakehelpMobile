@@ -648,8 +648,8 @@ function updateCalSumPerc(){
       });
       $("#sum").val(formatNum(sum,2));
       $("#percentSum").val(formatNum(percentSum,2));
-      $("#rowNum1").attr("value",(l-1)).button("refresh");
-      $("#rowNum2").attr("value",(l-1)).hidden("refresh");
+      $("#rowNum").attr("value",(l-1)).button("refresh");
+      $("#rowNumNew").attr("value",(l-1));      // 现在这个更新不了！
 }
 
 // 求用量总和与百分比总和
@@ -1250,5 +1250,16 @@ $(function(){
       var search = window.location.search;
       var id = search.substr(search.lastIndexOf("=")+1);
       showHintRq(this.value,id);
+  });
+});
+
+// 水平划动改变背景色
+$(function(){
+  $("tr[id^='row']").on("swipe", function(){
+    $(this).css({
+      color: 'red',
+      backgroundColor: 'yellow',
+      textDecoration: 'line-through'
+    });
   });
 });

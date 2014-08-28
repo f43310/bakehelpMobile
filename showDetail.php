@@ -97,8 +97,9 @@
 						<legend>计算保存:</legend>
 						<input type='button' name='generateRecipe' id='generateRecipe' value='计算' data-inline='true'>
 						<input type='submit' name='submit' id='saveSonRecipe' value='保存' data-inline='true' disabled=\"disabled\">
-						<input type='button' name='rowNum' id='rowNum1' value='".$rowSum."' data-inline='true'>
-						<input type='hidden' name='rowNum' id='rowNum2' value='".$rowSum."'>
+						<input type='button' name='rowNum' id='rowNum' value='".$rowSum."' data-inline='true'>
+						<input type='hidden' name='rowNum' id='rowNumOld' value='".$rowSum."'>
+						<input type='hidden' name='rowNumNew' id='rowNumNew' value='".$rowSum."'>
 
 					</fieldset>
 
@@ -159,7 +160,8 @@
 						<legend>更新保存:</legend>
 						<input type='submit' name='submit' id='updateRecipe' value='更新配方' data-inline='true' onclick='return confirm(\"你确定要更新配方内容吗？如果是将删除所有过时的子配方.\");'>
 						<input type='submit' name='submit' id='updataROther' value='更新其它' data-inline='true'>
-						<input type='submit' name='submit' id='saveAsNewRecipe' value='保存为新配方' data-inline='true'>
+						<input type='submit' name='submit' id='saveAsNewRecipe' value='另存为新配方' data-inline='true'>
+						<input type='submit' name='submit' id='saveNewAddingre' value='保存新增加配料' data-inline='true'>
 					</fieldset>
 				</li>
 
@@ -200,7 +202,7 @@
 			$ingre=null;
 			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 改名 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 		
-		}else if($_REQUEST["submit"]=="更新其它"){
+		}else if($_REQUEST["submit"] == "更新其它"){
 			$r=new recipe;
 			$r->__set("id",$_REQUEST["recipeId"]);
 			// $r->__set(name,$_REQUEST[rName]);
@@ -211,7 +213,8 @@
 			$r->updateOther();
 			$r=null;
 			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 更新其它 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
-		}else if ($_REQUEST["submit"]=="更新配方"){
+
+		}else if ($_REQUEST["submit"] == "更新配方"){
 			$r=new recipe;
 			$r->__set("id",$_REQUEST["recipeId"]);
 			$r->__set("name",$_REQUEST["rName"]);
@@ -220,11 +223,11 @@
 			$r->__set("temperatureD",$_REQUEST["temperatureD"]);
 			$r->__set("cooktime",$_REQUEST["cooktime"]);
 			$r->update();
-			$r=null;
+			$r = null;
 
 			$rowsNum=$_REQUEST["rowNum"];
-			for ($i=0; $i <$rowsNum; $i++) { 
-				$ingre=new ingre;
+			for ($i = 0; $i < $rowsNum; $i++) { 
+				$ingre = new ingre;
 				$ingre->__set("id",$_REQUEST["ingreId".($i+1)]);
 				$ingre->__set("name",$_REQUEST["ingre".($i+1)]);
 				$ingre->__set("recipeName",$_REQUEST["rName"]);
@@ -233,7 +236,7 @@
 				$ingre->__set("sum",$_REQUEST["sum"]);
 				$ingre->__set("perSum",$_REQUEST["percentSum"]);
 				$ingre->update();
-				$ingre=null;
+				$ingre = null;
 			}
 
 			// 更新原配方后删除所有子配方
@@ -328,6 +331,46 @@
 			echo "<script>alert('配方: ".$_REQUEST["recipeName"]." 另存为 ".$_REQUEST["rName"]." 成功!');</script>";
 			echo "<script>location.href='index.php';</script>";
 
+		}
+		else if ($_REQUEST["submit"] == "保存新增加配料") {
+			$rowsNumOld = $_REQUEST["rowNum"];
+			$rowsNumNew = $_REQUEST["rowNumNew"];
+
+			$sum = $_REQUEST['sum'];
+			$perSum = $_REQUEST['percentSum'];
+
+			if ($rowsNumNew > $rowsNumOld) {
+				# code...
+				for ($i = 1; $i <= $rowsNumNew ; $i++) { 
+					if ($i <= $rowsNumOld) {
+						# code...
+						$ingre = new ingre;
+						$ingre->__set("id",$_REQUEST["ingreId".$i]);
+						$ingre->__set('sum', $_REQUEST['sum']);
+						$ingre->__set('perSum', $_REQUEST['percentSum']);
+						$ingre->updateSum();
+					} else {
+						# code...
+						$ingre = new ingre;			// 建立一个配方对象
+						$ingre->__set('name',$_REQUEST['ingre'.$i]);
+						$ingre->__set('metric',$_REQUEST['metric'.$i]);
+						$ingre->__set('percent',$_REQUEST['percent'.$i]);
+						$ingre->__set('recipeName',$_REQUEST['rName']);
+						$ingre->__set('recipeId',$_REQUEST['recipeId']);
+						$ingre->__set('sum',$_REQUEST['sum']);
+						$ingre->__set('perSum',$_REQUEST['percentSum']);
+						$ingre->add();
+						$ingre=NULL;
+					}
+				}
+			} else {
+				echo "<script>alert('请确认你己经增加新配料!');</script>";
+				echo "<script>location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>";
+			}
+			// 更新配方总量和总百分比
+
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方新增项 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+			
 		}
 		else {
 			print("<script>location.href='index.php';</script>");

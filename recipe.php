@@ -303,6 +303,16 @@
  			$db=null;
  		}
 
+ 		// update showDetail.php 的更新,只更新sum
+ 		function updateSum(){
+ 			$db=new database;
+ 			$sql = "UPDATE ingres SET ";
+ 			$sql .= "sum=$this->sum, perSum=$this->perSum";
+ 			$sql .= " where id=$this->id";
+ 			$db->execute($sql);
+ 			$db=null;
+ 		}
+
  		// updateRecipeName 更新 ingres 表该配方所有 recipeName
  		function updateRecipeName(){
  			$db=new database;
