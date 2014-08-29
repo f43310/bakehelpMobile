@@ -17,7 +17,7 @@
 			$all_reqs = $ingre->queryReq();
 			$ingre=null;
 			foreach ($all_reqs as $item) {
-				print("<li><a href='index.php?action=showReqDetail&id=".$_REQUEST["id"]."&reqSum=".$item->requireSum."'><span class='red'>$item->requireSum</span><h2>$item->remark</h2></a></li>");
+				print("<li><a rel='external' href='index.php?action=showReqDetail&id=".$_REQUEST["id"]."&reqSum=".$item->requireSum."'><span class='red'>$item->requireSum</span><h2>$item->remark</h2></a></li>");
 			}
 	
 			print("</ul>");

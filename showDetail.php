@@ -200,7 +200,8 @@
 			$ingre->__set("recipeName",$_REQUEST["rName"]);
 			$ingre->updateRecipeName();
 			$ingre=null;
-			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 改名 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 改名 成功!');</script>");
+			print("<script>location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 		
 		}else if($_REQUEST["submit"] == "更新其它"){
 			$r=new recipe;
@@ -212,7 +213,8 @@
 			$r->__set("cooktime",$_REQUEST["cooktime"]);
 			$r->updateOther();
 			$r=null;
-			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 更新其它 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 更新其它 成功!');</script>");
+			print("<script>location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 
 		}else if ($_REQUEST["submit"] == "更新配方"){
 			$r=new recipe;
@@ -247,7 +249,8 @@
 			// print("修改成功！<br />");
 			// print("<a href='index.php'>查看结果</a>");
 			// print("<a href='index.php?action=showDetail&id=".$_REQUEST[recipeId]."'>查看结果</a>");
-			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方更新 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方更新 成功!');</script>");
+			print("<script>location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 
 		}else if($_REQUEST["submit"]=="保存"){
 			
@@ -272,7 +275,7 @@
 			print("保存子配方成功！<br />");
 			print("<a href='index.php?action=showSonRecipes&id=".$_REQUEST["recipeId"]."'>查看生成的子配方</a>");
 
-		}else if($_REQUEST["submit"]=="保存为新配方"){
+		}else if($_REQUEST["submit"]=="另存为新配方"){
 			// print("<pre>");
 			// var_dump($_REQUEST);
 			// print("</pre>");
@@ -369,7 +372,8 @@
 			}
 			// 更新配方总量和总百分比
 
-			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方新增项 成功!');location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
+			print("<script>alert('配方 \"".$_REQUEST["rName"]."\" 配方新增项 成功!');</script>");
+			print("<script>location.href='index.php?action=showDetail&id=".$_REQUEST["recipeId"]."';</script>");
 			
 		}
 		else {

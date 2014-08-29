@@ -579,8 +579,8 @@ function updateCalculatePercSum(){
       // }
 
       $("#percentSum").val(formatNum(percentSum,2));
-      $("#rowNum1").attr("value",(l-1)).button("refresh");
-      $("#rowNum2").attr("value",(l-1)).hidden("refresh");
+      $("#rowNum").attr("value",(l-1)).button("refresh");
+      $("#rowNumOld").attr("value",(l-1));
 }
 
 // 计算总量和总百分比
