@@ -723,6 +723,24 @@ $(function(){
 
 });
 
+// showDetail.php 删除配方项
+ function delIngre(recid, id, index, rn){
+    if ( id == "" || id == undefined){
+      deltr(index);
+    }else{
+        loadXMLDoc("delIngre.php?id="+id+"&recid="+recid, function(){
+          if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+            deltr(index);
+            var resText = xmlhttp.responseText.split("-");
+            $("#sum").val(resText[0]);
+            $("#percentSum").val(resText[1]);
+          }
+        });
+    }  
+
+    $("#rowNum").val(rn--).button("refresh");
+    
+ }
 
    // 删除一行<tr>
    //

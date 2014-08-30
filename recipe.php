@@ -218,6 +218,16 @@
  			$db=NULL;
  		}
 
+
+ 		// 根据配料id，删除项目
+ 		function delOne(){
+ 			$db = new database;
+ 			$sql = "DELETE FROM ingres ";
+ 			$sql .= "WHERE id=$this->id";
+ 			$db->execute($sql);
+ 			$db=NULL;
+ 		}
+
  		// 删除单个需求子配方
  		function deleteRR(){
  			$db = new database;
@@ -246,6 +256,17 @@
  			// exit;
  			$arr_ingres=$db->query($sql);
  			return $arr_ingres;
+ 			$db=NULL;
+ 		}
+
+ 		// 查询删除更新后新的总量和总百分比
+ 		function querySum(){
+ 			$db= new database;
+ 			$sql = "SELECT sum, perSum FROM ingres WHERE recipeId=$this->recipeId and (sum>0 or perSum>0) and requireSum=0";
+ 			// echo $sql;								// 调试
+ 			// exit;
+ 			$arr_sum=$db->executeSFOR($sql);
+ 			return $arr_sum;
  			$db=NULL;
  		}
 
@@ -303,12 +324,25 @@
  			$db=null;
  		}
 
- 		// update showDetail.php 的更新,只更新sum
+ 		// update showDetail.php 的更新,只更新sum,perSum
  		function updateSum(){
  			$db=new database;
  			$sql = "UPDATE ingres SET ";
  			$sql .= "sum=$this->sum, perSum=$this->perSum";
  			$sql .= " where id=$this->id";
+ 			$db->execute($sql);
+ 			$db=null;
+ 		}
+
+ 		// updateSumPSum() showDetail.php 的删除配料后更新sum, perSum
+ 		function updateSumPSum(){
+ 			$db=new database;
+ 			// update ingres set sum = (SELECT SUM(metric) FROM (SELECT * FROM `ingres`) AS x WHERE recipeId=138) WHERE recipeId = 138
+ 			// update ingres set sum=(SELECT SUM(metric) FROM (SELECT * FROM `ingres`) AS x WHERE recipeId=138),perSum=(SELECT SUM(percent) FROM (SELECT * FROM `ingres`) AS y WHERE recipeId=138) WHERE recipeId=138
+ 			$sql = "UPDATE ingres SET ";
+ 			$sql .= "sum=(SELECT SUM(metric) FROM (SELECT * FROM ingres) AS x WHERE recipeId=$this->recipeId)";
+ 			$sql .= ",perSum=(SELECT SUM(percent) FROM (SELECT * FROM ingres) AS y WHERE recipeId=$this->recipeId)";
+ 			$sql .= " where recipeId=$this->recipeId";
  			$db->execute($sql);
  			$db=null;
  		}

@@ -65,7 +65,7 @@
 					<td class='ui-field-contain'><input type='text' name='ingre".$i."' id='ingre".$i."' value=\"$item->name\"><input type='hidden' name='ingreId".$i."' id='ingreId".$i."' value=\"$item->id\"></td>
 					<td class='ui-field-contain'><input type='text' name='metric".$i."' id='metric".$i."'  value=\"$item->metric\"></td>
 					<td class='ui-field-contain'><input type='text' name='percent".$i."' id='percent".$i."'  value=\"$item->percent\"></td>
-					<td class='ui-field-contain'><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-mini\" onclick=\"deltr($i)\">删</a></td>
+					<td class='ui-field-contain'><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-mini\" onclick=\"delIngre(".$_REQUEST["id"].",$item->id,$i,$rowSum)\">删</a></td>
 				</tr>
 				");
 				$i++;
