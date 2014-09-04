@@ -340,9 +340,9 @@
  			// update ingres set sum = (SELECT SUM(metric) FROM (SELECT * FROM `ingres`) AS x WHERE recipeId=138) WHERE recipeId = 138
  			// update ingres set sum=(SELECT SUM(metric) FROM (SELECT * FROM `ingres`) AS x WHERE recipeId=138),perSum=(SELECT SUM(percent) FROM (SELECT * FROM `ingres`) AS y WHERE recipeId=138) WHERE recipeId=138
  			$sql = "UPDATE ingres SET ";
- 			$sql .= "sum=(SELECT SUM(metric) FROM (SELECT * FROM ingres) AS x WHERE recipeId=$this->recipeId)";
- 			$sql .= ",perSum=(SELECT SUM(percent) FROM (SELECT * FROM ingres) AS y WHERE recipeId=$this->recipeId)";
- 			$sql .= " where recipeId=$this->recipeId";
+ 			$sql .= "sum=(SELECT SUM(metric) FROM (SELECT * FROM ingres) AS x WHERE recipeId=$this->recipeId and sum>0 and requireSum=0)";
+ 			$sql .= ",perSum=(SELECT SUM(percent) FROM (SELECT * FROM ingres) AS y WHERE recipeId=$this->recipeId  and sum>0 and requireSum=0)";
+ 			$sql .= " where recipeId=$this->recipeId and sum>0 and requireSum=0";
  			$db->execute($sql);
  			$db=null;
  		}

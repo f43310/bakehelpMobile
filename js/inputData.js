@@ -580,7 +580,7 @@ function updateCalculatePercSum(){
 
       $("#percentSum").val(formatNum(percentSum,2));
       $("#rowNum").attr("value",(l-1)).button("refresh");
-      $("#rowNumOld").attr("value",(l-1));
+      $("#rowNumNew").attr("value",(l-1));  // 原来是rowNumOld
 }
 
 // 计算总量和总百分比
@@ -1273,7 +1273,7 @@ $(function(){
 
 // 水平划动改变背景色
 $(function(){
-  $("tr[id^='row']").on("swipe", function(){
+  $("tr[id^='row']").on("taphold", function(){
     $(this).css({
       color: 'red',
       backgroundColor: 'yellow',
