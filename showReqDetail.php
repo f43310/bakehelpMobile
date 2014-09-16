@@ -58,6 +58,11 @@
 				<td colspan='3'>备注：$remark</td>
 			</tr>");
 		print("</tbody></table>");
+		print("<div id='showTjj'></div>");
+		print("<div data-role='fieldcontain'>
+				<input type='hidden' name='recipeId' id='recipeId' value='".$_REQUEST["id"]."'>
+				<input type='button' name='queryActP' id='queryActP' value='查看实际百分比'>
+			</div>");
 		
 	}
 ?>

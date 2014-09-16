@@ -100,10 +100,24 @@
 						<input type='button' name='rowNum' id='rowNum' value='".$rowSum."' data-inline='true'>
 						<input type='hidden' name='rowNum' id='rowNumOld' value='".$rowSum."'>
 						<input type='hidden' name='rowNumNew' id='rowNumNew' value='".$rowSum."'>
+						<a href='#addActualPercent' data-rel='popup' data-position-to='window' class='ui-btn ui-corner-all ui-shadow ui-btn-inline' data-transition='pop'>AAP</a>
+						<div data-role='popup' id='addActualPercent'>
+							<a href='#' data-rel='back' class='ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-left'>Close</a>
+							<form>
+								<div style='padding:10px 20px;'>
+									<h3>增加添加剂:</h3>
+									<label for='tjjName'>添加剂</label>
+									<input type='text' name='tjjName' id='tjjName' value='' />
+									<label for='actPerc'>实际百分比</label>
+									<input type='text' name='actPerc' id='actPerc' value='' />
+									<label for='nowSum'>现总量</label>
+									<input type='text' name='nowSum' id='nowSum' value='".$sum."' />
+									<a href='#' id='saveActPerc' data-rel='back' class='ui-btn ui-corner-all ui-shadow'>保存</a>
+								</div>
+							</form>
+						</div>
 
 					</fieldset>
-
-					
 				</li>
 				<li class='ui-field-contain'>
 					<fieldset data-role=\"controlgroup\" data-type=\"horizontal\" data-mini='true'>

@@ -701,6 +701,7 @@ function add(){
         $("#tab input").textinput({clearBtn:false});
         $("#tab input").textinput("refresh");
       }
+      return _len;
 }
 
 
@@ -1273,11 +1274,65 @@ $(function(){
 
 // 水平划动改变背景色
 $(function(){
-  $("tr[id^='row']").on("taphold", function(){
+  $("tr[id^='row']").on("swipeleft", function(){
     $(this).css({
       color: 'red',
       backgroundColor: 'yellow',
       textDecoration: 'line-through'
     });
+  });
+});
+
+// 保存相关配方添加剂量
+function saveActPerc(id,name,actperc,nowsum){
+  var tjjM = formatNum(actperc*nowsum/100, 2);
+  loadXMLDoc("saveActPerc.php?id="+id+"&name="+name+"&tjjm="+tjjM+"&actperc="+actperc+"&nowsum="+nowsum,function(){
+    if(xmlhttp.readyState==4 && xmlhttp.status==200){
+        var newid = add();
+        $("#ingre"+newid).val(name);
+        $("#metric"+newid).val(tjjM);
+        clearPercentCol();
+    }
+  });
+
+}
+
+// 保存相关配方添加剂量
+$(function(){
+  $("#saveActPerc").on("click", function(){
+      var id = $("#recipeId").val();
+      var name = $("#tjjName").val();
+      var actperc = $("#actPerc").val();
+      var nowsum = $("#nowSum").val();
+
+      console.log("DEBUG: - id =" + id);
+      console.log("DEBUG: - name =" + name);
+      console.log("DEBUG: - actperc =" + actperc);
+      console.log("DEBUG: - nowsum =" + nowsum);
+
+      saveActPerc(id,name,actperc,nowsum);
+
+
+  });
+});
+
+// 查看实际百分比showReqDetail.php
+
+function queryActP(id){
+  loadXMLDoc("queryActP.php?id="+id,function(){
+    if (xmlhttp.readyState == 4 && xmlhttp.status==200){
+        var backStr = xmlhttp.responseText;
+        // backStr.split("-");
+        // $("tr td:first").find(backStr[0]).parent().parent().find(td:last).append("("+backStr[1]+")");
+        $("#showTjj").html(backStr);
+        $("#showTjj").trigger('create');
+    }
+  });
+}
+
+$(function(){
+  $("#queryActP").on("click",function(){
+      var recipeId = $("#recipeId").val();
+      queryActP(recipeId);
   });
 });
