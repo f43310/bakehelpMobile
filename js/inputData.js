@@ -1336,3 +1336,76 @@ $(function(){
       queryActP(recipeId);
   });
 });
+
+// checkSet() showDetail.php,showReqDetail.php
+// jqueryMobile fuck 他妈的太变态先绑定事件改变checked属性
+// $(function(){
+//     $("input[type='checkbox']").on("click",function(){
+//       alert(this);
+//       $(this).prop('checked', true).checkboxradio("refresh");
+//     });
+// }); 
+function checkedChange(id){
+  $(":radio").not("#r"+id).attr("checked",false).checkboxradio("refresh");
+  $(":radio#r"+id).attr("checked", true).checkboxradio("refresh");
+}
+// $(function(){
+//     $("input[type='radio']").on("click",function(){
+//       // alert("111");
+//       $(":radio").attr("checked",false).checkboxradio("refresh");
+//       $(this).attr('checked', true).checkboxradio("refresh");
+//       // $(":radio").checkboxradio("refresh");
+//     });
+// }); 
+var sum = 0;
+function checkSet(recid,thisId){
+  // $("input[id='"+thisId+"']").checkboxradio('refresh');
+  // $("input[id='"+thisId+"']").attr('checked', true).checkboxradio("refresh");
+  // alert(thisId);
+  // alert($("input[id='"+thisId+"']").attr("checked"));
+  // if ($("input[id='"+thisId+"']").attr("checked")) {
+  //     alert("111");
+  // } else{
+  //   alert("000");
+  // };
+  // 如果没有选中，设置为选中，执行setMain();
+ // alert(thisId.substr(6));
+  if ($("input[id='"+thisId+"']").attr("checked") == undefined){
+      var thisMain = $("tr[id='row"+thisId.substr(6)+"'] td").eq(1).contents().last().text();
+      // alert(thisMain);
+      sum += Number(thisMain);
+      if ($(":radio#r1").attr("checked") == 'checked') {
+          // alert("#1");
+          $("input[id='actMetric']").val(sum);
+      } else{
+          $("input[id='mainSum']").val(sum);
+      };
+      
+      $("input[id='"+thisId+"']").attr('checked', true).checkboxradio("refresh");
+  // 如果选中，设置未选中，执行unSetMain();
+  } else if ($("input[id='"+thisId+"']").attr("checked") == 'checked'){
+      var thisMain = $("tr[id='row"+thisId.substr(6)+"'] td").eq(1).contents().last().text();
+      // alert(thisMain);
+      sum -= Number(thisMain);
+      $("input[id='mainSum']").val(sum);
+      $("input[id='"+thisId+"']").attr('checked', false).checkboxradio("refresh");
+  }
+}
+
+// checkset2
+
+function checkSet2(){
+  var sum = $(":checkbox#sum2").parent().siblings().eq(1).contents().last().text();
+  // alert(sum);
+  $("input[id='mainSum']").val(sum);
+}
+
+// 计算实际烘焙比 showReqDetail.php
+$(function(){
+  $("#calActP").on("click",function(){
+      var actMetric = $("#actMetric").val();
+      var sumMain = $("#mainSum").val();
+      var percent = formatNum(actMetric/sumMain*100,2);
+      $("#actBakeP").val(percent);
+  });
+});

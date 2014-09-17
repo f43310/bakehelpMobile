@@ -40,7 +40,7 @@
 		print("<table data-role='table' data-mode='reflow' class='ui-body-d table-stripe my-custom-breakpoint'>
 			   <thead>
 					<tr>
-						<th colspan='4'>
+						<th colspan='5'>
 						<div data-role='fieldcontain'>
 							<label for='rName' class='ui-hidden-accessible'>配方:</label>
 							<input type='text' name='rName' id='rName' value='".$recipeName."' data-inline='true'>
@@ -53,6 +53,7 @@
 						<th>配料</th>
 						<th>用量</th>
 						<th>百分比</th>
+                        <th>主</th>
                         <th></th>
 					</tr>
 			   </thead>
@@ -65,6 +66,7 @@
 					<td class='ui-field-contain'><input type='text' name='ingre".$i."' id='ingre".$i."' value=\"$item->name\"><input type='hidden' name='ingreId".$i."' id='ingreId".$i."' value=\"$item->id\"></td>
 					<td class='ui-field-contain'><input type='text' name='metric".$i."' id='metric".$i."'  value=\"$item->metric\"></td>
 					<td class='ui-field-contain'><input type='text' name='percent".$i."' id='percent".$i."'  value=\"$item->percent\"></td>
+					<td class='ui-field-contain'><input type='checkbox' style='margin-top:5px;' name='isMain".$i."' id='isMain".$i."' onclick='checkSet($item->id)' value=\"1\"></td>
 					<td class='ui-field-contain'><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-mini\" onclick=\"delIngre(".$_REQUEST["id"].",$item->id,$i,$rowSum)\">删</a></td>
 				</tr>
 				");
