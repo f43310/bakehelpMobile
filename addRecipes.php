@@ -61,7 +61,7 @@
 			<td><div data-role=\"fieldcontain\"><input type=\"text\" name=\"ingre1\" id=\"ingre1\" data-mini=\"true\"></div></td>
 			<td><div data-role=\"fieldcontain\"><input type=\"number\" name=\"metric1\" id=\"metric1\" data-mini=\"true\"></div></td>
 			<td><div data-role=\"fieldcontain\"><input type=\"number\" name=\"percent1\" id=\"percent1\" data-mini=\"true\" placeholder='此列自动生成'> </div></td>
-			<td><a href=\"#\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-state-disabled ui-mini\">删</a></td></tr>");
+			<td><a href=\"#\" onclick=\"deltr(1)\" data-role=\"button\" data-mini=\"true\" class=\"ui-btn ui-mini\">删</a></td></tr>");
 
 		print("</tbody>");
 

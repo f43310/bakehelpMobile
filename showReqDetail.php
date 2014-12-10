@@ -61,7 +61,7 @@
 				<td colspan='4'>备注：$remark</td>
 			</tr>");
 		print("</tbody></table>");
-		print("<table data-role='table' data-mode='reflow' class='ui-body-d table-stripe my-custom-breakpoint'>
+		print("<table data-role='table' data-mode='reflow' class='ui-body-d table-stripe my-custom-breakpoint2'>
 				<thead><th>实际用量</th><th></th><th>主料量</th><th></th><th>实际烘焙比</th><th></th></thead>
 				<tbody>
 					<tr>

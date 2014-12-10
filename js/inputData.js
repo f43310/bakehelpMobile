@@ -770,6 +770,8 @@ $(function(){
                 console.log("DEBUG - 粘贴3: "+gU);
                 gU="";
               });
+              // 设置step验证
+              $("input[type='number']").attr("step", "0.01");
          }
          $("tbody").trigger("create");
          $("#tab").table("rebuild");
